@@ -172,7 +172,7 @@ export default async function ProductPage({ params }: { params: Params }) {
       {related.length > 0 && (
         <section style={{ marginTop:"3rem" }}>
           <h2 style={{ fontSize:"1.25rem", fontWeight:700, marginBottom:"1rem" }}>You Might Also Like</h2>
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))", gap:"1rem" }}>
+          <div className="product-grid">
             {related.map((p) => <ProductCard key={p.id} product={p} />)}
           </div>
         </section>

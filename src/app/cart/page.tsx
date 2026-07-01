@@ -80,7 +80,7 @@ export default function CartPage() {
             Proceed to Checkout →
           </Link>
           <div style={{ marginTop:"1rem", display:"flex", flexDirection:"column", gap:"0.4rem" }}>
-            {["🔒 Secure checkout","↩ 7-day easy returns","🚚 Free delivery above ₹499"].map(t=>(
+            {["🔒 Insured secure shipping","↩ 30-day returns","↻ Lifetime exchange"].map(t=>(
               <p key={t} style={{ fontSize:"0.78rem", color:"var(--fg-muted)", display:"flex", gap:"0.4rem" }}>{t}</p>
             ))}
           </div>

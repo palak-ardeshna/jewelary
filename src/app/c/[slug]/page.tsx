@@ -60,7 +60,7 @@ export default async function CollectionPage({ params }: { params: Params }) {
       {collection.products.length === 0 ? (
         <p style={{ color:"var(--fg-muted)", padding:"2rem 0" }}>No matching products right now.</p>
       ) : (
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))", gap:"1rem" }}>
+        <div className="product-grid">
           {collection.products.map((p) => <ProductCard key={p.id} product={p} />)}
         </div>
       )}

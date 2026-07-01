@@ -273,3 +273,12 @@ img, svg, video, iframe { max-width: 100%; }
   .hero-section { padding: 3rem 1.25rem !important; margin-bottom: 2.25rem !important; }
   h1.font-display { font-size: clamp(2rem, 8vw, 2.75rem) !important; }
 }
+
+/* ── Product listing grids: fluid on desktop, always 2-up on phones ── */
+.product-grid {
+  display: grid; gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+@media (max-width: 640px) {
+  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+}

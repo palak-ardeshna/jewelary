@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { getProductsByCategoryId } from "@/data/store";
 import { ProductCard } from "@/components/ProductCard";
 
-const COLORS = ["Black","White","Blue","Grey","Green","Maroon","Olive","Beige","Pink","Natural"];
+const METALS = ["Yellow Gold","White Gold","Rose Gold","Platinum","Silver"];
 
 // Filter bar + results are rendered client-side so they react to the URL query
 // string (?color=&maxPrice=&sort=) on a static host where the server can't.
@@ -49,7 +49,7 @@ export function CategoryProducts({ categoryId, path }: { categoryId: string; pat
         {/* Price */}
         <div style={{ display:"flex", alignItems:"center", gap:"0.5rem" }}>
           <span style={{ fontSize:"0.8rem", fontWeight:600, color:"var(--fg-muted)" }}>Max Price:</span>
-          {[[300,"Under ₹300"],[500,"Under ₹500"],[1000,"Under ₹1000"]].map(([val,label])=>(
+          {[[25000,"Under ₹25K"],[50000,"Under ₹50K"],[100000,"Under ₹1L"]].map(([val,label])=>(
             <Link key={val} href={buildUrl({ maxPrice: maxPrice === String(val) ? undefined : String(val) })} style={{
               padding:"0.3rem 0.75rem", borderRadius:99, fontSize:"0.8rem", fontWeight:600, textDecoration:"none",
               background: maxPrice === String(val) ? "var(--accent)" : "var(--bg)",
@@ -59,10 +59,10 @@ export function CategoryProducts({ categoryId, path }: { categoryId: string; pat
           ))}
         </div>
 
-        {/* Colour */}
+        {/* Metal */}
         <div style={{ display:"flex", alignItems:"center", gap:"0.5rem", flexWrap:"wrap" }}>
-          <span style={{ fontSize:"0.8rem", fontWeight:600, color:"var(--fg-muted)" }}>Colour:</span>
-          {COLORS.map((c) => (
+          <span style={{ fontSize:"0.8rem", fontWeight:600, color:"var(--fg-muted)" }}>Metal:</span>
+          {METALS.map((c) => (
             <Link key={c} href={buildUrl({ color: color === c ? undefined : c })} style={{
               padding:"0.3rem 0.75rem", borderRadius:99, fontSize:"0.8rem", fontWeight:600, textDecoration:"none",
               background: color === c ? "#111827" : "var(--bg)",
@@ -92,7 +92,7 @@ export function CategoryProducts({ categoryId, path }: { categoryId: string; pat
           <Link href={path} style={{ display:"inline-block", marginTop:"1rem", color:"var(--primary)", textDecoration:"none", fontWeight:600 }}>Clear filters</Link>
         </div>
       ) : (
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))", gap:"1rem" }}>
+        <div className="product-grid">
           {products.map((p) => <ProductCard key={p.id} product={p} />)}
         </div>
       )}

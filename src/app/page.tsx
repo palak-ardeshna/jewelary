@@ -84,7 +84,7 @@ export default function HomePage() {
             </h2>
             <Link href="/gifts" style={{ fontSize:"0.85rem", color:"var(--accent-dark)", textDecoration:"none", fontWeight:600 }}>View all →</Link>
           </div>
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))", gap:"1rem" }}>
+          <div className="product-grid">
             {gifting.map((p) => <ProductCard key={p.id} product={p} />)}
           </div>
         </section>
@@ -96,7 +96,7 @@ export default function HomePage() {
           <h2 className="font-display" style={{ fontSize:"1.9rem", fontWeight:500 }}>The Signature Selection</h2>
           <Link href="/rings" style={{ fontSize:"0.85rem", color:"var(--accent-dark)", textDecoration:"none", fontWeight:600 }}>Shop all →</Link>
         </div>
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))", gap:"1rem" }}>
+        <div className="product-grid">
           {featured.map((p) => <ProductCard key={p.id} product={p} />)}
         </div>
       </section>

@@ -33,10 +33,10 @@ function SearchResults() {
         <div style={{ textAlign:"center", padding:"4rem 1rem", color:"var(--fg-muted)" }}>
           <div style={{ fontSize:"3rem", marginBottom:"1rem" }}>😕</div>
           <p style={{ fontWeight:600, fontSize:"1.1rem" }}>No results for "{query}"</p>
-          <p style={{ marginTop:"0.5rem", fontSize:"0.875rem" }}>Try: jackets, kurti, sneakers, wallet, tee</p>
+          <p style={{ marginTop:"0.5rem", fontSize:"0.875rem" }}>Try: rings, diamond, gold chain, earrings, mangalsutra</p>
         </div>
       ) : (
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))", gap:"1rem" }}>
+        <div className="product-grid">
           {results.map((p) => <ProductCard key={p.id} product={p} />)}
         </div>
       )}
