@@ -13,7 +13,11 @@
 
 import { getProductImageUrl } from "@/lib/product-images";
 // Local product photography (static import → optimised path, works on static export).
-import mangalsutraImg from "@/assets/jewelary-img/Media.jpg";
+// Images analysed from src/assets/jewelary-img and matched to the product each depicts.
+import mangalsutraImg from "@/assets/jewelary-img/Mediaa.jpg";       // gold mangalsutra, black beads, CZ halo
+import mangalsutraLeafImg from "@/assets/jewelary-img/d.jpg";        // gold mangalsutra, leaf-vine + heart charm
+import diamondNecklaceImg from "@/assets/jewelary-img/Media.jpg";    // delicate diamond drop necklace
+import heartDropEarringsImg from "@/assets/jewelary-img/y.jpg";      // blue crystal heart-drop earrings
 
 export interface Brand { id: string; slug: string; name: string; }
 export interface Category { id: string; slug: string; name: string; description?: string; parentId?: string; }
@@ -115,8 +119,9 @@ const _products: Product[] = [
   },
   // ── Necklaces ─────────────────────────────────────────────────────────────
   {
-    id: "p_tennis_necklace", slug: "riviera-diamond-tennis-necklace", name: "Riviera Diamond Tennis Necklace",
-    description: "A continuous line of graduated round diamonds in 18K white gold — the ultimate red-carpet classic. Secured with a concealed box clasp and safety catch.",
+    id: "p_tennis_necklace", slug: "riviera-diamond-tennis-necklace", name: "Riviera Diamond Necklace",
+    description: "A delicate station line of graduated round diamonds in 18K white gold, finishing in a graceful diamond drop at the centre. The red-carpet classic, reimagined for everyday elegance. Secured with a concealed box clasp and safety catch.",
+    imageUrl: diamondNecklaceImg.src,
     priceInPaise: 44900000, mrpInPaise: 49900000, currency: "INR", inStock: true, color: "White Gold",
     categoryId: "c_necklaces", brandId: "b_bridal", collectionLine: "Riviera", gender: "Women",
     metal: "18K White Gold", purity: "18K", grossWeightG: 14.2,
@@ -171,6 +176,17 @@ const _products: Product[] = [
     metal: "22K Yellow Gold", purity: "22K", grossWeightG: 12.6,
     certifications: [{ body: "BIS" }],
     rating: 4.8, reviewCount: 96, sizes: [],
+  },
+  {
+    id: "p_heart_earrings", slug: "aria-blue-crystal-heart-drop-earrings", name: "Aria Blue Crystal Heart Drop Earrings",
+    description: "Faceted heart-cut blue crystals suspended from gold-plated ear wires. A pop of sapphire-blue colour that catches the light — feather-light for all-day wear and a much-loved gift.",
+    imageUrl: heartDropEarringsImg.src,
+    priceInPaise: 2900000, mrpInPaise: 3400000, currency: "INR", inStock: true, color: "Yellow Gold",
+    categoryId: "c_earrings", brandId: "b_signature", collectionLine: "Gifts", gender: "Women",
+    metal: "Gold-Plated Silver", purity: "925", grossWeightG: 3.4,
+    gemstones: [{ type: "Blue Crystal", caratWeight: 2.0, cut: "Heart", count: 2 }],
+    certifications: [{ body: "HALLMARK" }],
+    rating: 4.6, reviewCount: 74, sizes: [],
   },
   // ── Bracelets ─────────────────────────────────────────────────────────────
   {
@@ -243,6 +259,17 @@ const _products: Product[] = [
     gemstones: [{ type: "Diamond", caratWeight: 0.35, cut: "Round", count: 14 }],
     certifications: [{ body: "BIS" }],
     rating: 4.7, reviewCount: 138, sizes: ["18in","20in"],
+  },
+  {
+    id: "p_mangalsutra_leaf", slug: "vallari-leaf-heart-mangalsutra", name: "Vallari Leaf & Heart Mangalsutra",
+    description: "A delicate mangalsutra with a pavé leaf-vine motif in 18K gold, finished with a polished heart charm, on a traditional black-bead chain. Light enough for everyday wear — office to festive.",
+    imageUrl: mangalsutraLeafImg.src,
+    priceInPaise: 5900000, mrpInPaise: 6500000, currency: "INR", inStock: true, color: "Yellow Gold",
+    categoryId: "c_mangalsutra", brandId: "b_signature", collectionLine: "Everyday Gold", gender: "Women",
+    metal: "18K Yellow Gold", purity: "18K", grossWeightG: 5.2,
+    gemstones: [{ type: "Diamond", caratWeight: 0.25, cut: "Marquise", count: 12 }],
+    certifications: [{ body: "BIS" }],
+    rating: 4.6, reviewCount: 58, sizes: ["18in","20in"],
   },
   // ── Gifts ─────────────────────────────────────────────────────────────────
   {
