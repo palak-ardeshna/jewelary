@@ -18,6 +18,8 @@ import mangalsutraImg from "@/assets/jewelary-img/Mediaa.jpg";       // gold man
 import mangalsutraLeafImg from "@/assets/jewelary-img/d.jpg";        // gold mangalsutra, leaf-vine + heart charm
 import diamondNecklaceImg from "@/assets/jewelary-img/Media.jpg";    // delicate diamond drop necklace
 import heartDropEarringsImg from "@/assets/jewelary-img/y.jpg";      // blue crystal heart-drop earrings
+import pinkHaloRingImg from "@/assets/jewelary-img/rr.jpg";          // pink sapphire halo ring
+import rubyBangleImg from "@/assets/jewelary-img/w.jpg";             // gold bangle, ruby flower cluster
 
 export interface Brand { id: string; slug: string; name: string; }
 export interface Category { id: string; slug: string; name: string; description?: string; parentId?: string; }
@@ -70,7 +72,7 @@ const _products: Product[] = [
   {
     id: "p_solitaire_pt", slug: "aurora-platinum-solitaire-ring", name: "Aurora Platinum Solitaire Ring",
     description: "A timeless six-prong solitaire in 95% platinum, set with a single IGI-certified round-brilliant diamond. The knife-edge band throws light back into the stone for maximum brilliance. A forever ring, made to be worn every day.",
-    priceInPaise: 24500000, mrpInPaise: 27500000, currency: "INR", inStock: true, color: "Platinum",
+    priceInPaise: 27900, mrpInPaise: 29900, currency: "INR", inStock: true, color: "Platinum",
     categoryId: "c_engagement", brandId: "b_bridal", collectionLine: "Solitaire", gender: "Women",
     metal: "Platinum 950", purity: "PT950", grossWeightG: 4.2,
     gemstones: [{ type: "Diamond", caratWeight: 0.75, cut: "Round", clarity: "VVS2", count: 1 }],
@@ -80,7 +82,7 @@ const _products: Product[] = [
   {
     id: "p_halo_ring", slug: "celeste-halo-diamond-ring", name: "Celeste Halo Diamond Ring",
     description: "A brilliant centre stone encircled by a halo of pavé diamonds in 18K white gold. The halo amplifies the centre diamond's size and sparkle, while the split shank adds a modern edge.",
-    priceInPaise: 18900000, mrpInPaise: 21000000, currency: "INR", inStock: true, color: "White Gold",
+    priceInPaise: 24900, mrpInPaise: 29900, currency: "INR", inStock: true, color: "White Gold",
     categoryId: "c_engagement", brandId: "b_bridal", collectionLine: "Halo", gender: "Women",
     metal: "18K White Gold", purity: "18K", grossWeightG: 3.8,
     gemstones: [{ type: "Diamond", caratWeight: 0.5, cut: "Round", clarity: "VS1", count: 1 }, { type: "Diamond", caratWeight: 0.3, cut: "Round", count: 18 }],
@@ -91,7 +93,7 @@ const _products: Product[] = [
   {
     id: "p_eternity_band", slug: "luna-diamond-eternity-band", name: "Luna Diamond Eternity Band",
     description: "A full circle of channel-set round diamonds in 18K yellow gold. Equally at home as a wedding band or a stack-worthy anniversary ring.",
-    priceInPaise: 13500000, mrpInPaise: 15000000, currency: "INR", inStock: true, color: "Yellow Gold",
+    priceInPaise: 22900, mrpInPaise: 27900, currency: "INR", inStock: true, color: "Yellow Gold",
     categoryId: "c_rings", brandId: "b_signature", collectionLine: "Eternity", gender: "Women",
     metal: "18K Yellow Gold", purity: "18K", grossWeightG: 3.1,
     gemstones: [{ type: "Diamond", caratWeight: 0.9, cut: "Round", count: 22 }],
@@ -101,7 +103,7 @@ const _products: Product[] = [
   {
     id: "p_signet_ring", slug: "regal-gold-signet-ring", name: "Regal 22K Gold Signet Ring",
     description: "A substantial 22K gold signet ring with a hand-finished matte face, ready for engraving. A modern heirloom for him or her.",
-    priceInPaise: 8900000, mrpInPaise: 9800000, currency: "INR", inStock: true, color: "Yellow Gold",
+    priceInPaise: 19900, mrpInPaise: 24900, currency: "INR", inStock: true, color: "Yellow Gold",
     categoryId: "c_rings", brandId: "b_signature", collectionLine: "Everyday Gold", gender: "Unisex",
     metal: "22K Yellow Gold", purity: "22K", grossWeightG: 9.4,
     certifications: [{ body: "BIS" }],
@@ -110,19 +112,30 @@ const _products: Product[] = [
   {
     id: "p_emerald_ring", slug: "verde-emerald-cocktail-ring", name: "Verde Emerald Cocktail Ring",
     description: "A vivid Zambian emerald framed by two trapezoid diamonds in 18K yellow gold. A statement ring that catches every light.",
-    priceInPaise: 29900000, mrpInPaise: 33500000, currency: "INR", inStock: false, color: "Yellow Gold",
+    priceInPaise: 25900, mrpInPaise: 29900, currency: "INR", inStock: false, color: "Yellow Gold",
     categoryId: "c_rings", brandId: "b_signature", collectionLine: "Gemstone", gender: "Women",
     metal: "18K Yellow Gold", purity: "18K", grossWeightG: 5.6,
     gemstones: [{ type: "Emerald", caratWeight: 1.8, cut: "Emerald", count: 1 }, { type: "Diamond", caratWeight: 0.4, cut: "Trapezoid", count: 2 }],
     certifications: [{ body: "SGL" }, { body: "BIS" }],
     rating: 4.8, reviewCount: 29, sizes: ["11","12","13","14","15"],
   },
+  {
+    id: "p_pink_halo_ring", slug: "rose-pink-sapphire-halo-ring", name: "Rosé Pink Sapphire Halo Ring",
+    description: "An emerald-cut pink sapphire framed by a halo of pavé diamonds, set on a slender diamond-set band in 18K rose gold. A romantic statement ring that flatters every skin tone.",
+    imageUrl: pinkHaloRingImg.src,
+    priceInPaise: 24900, mrpInPaise: 29900, currency: "INR", inStock: true, color: "Rose Gold",
+    categoryId: "c_rings", brandId: "b_signature", collectionLine: "Gemstone", gender: "Women",
+    metal: "18K Rose Gold", purity: "18K", grossWeightG: 4.0,
+    gemstones: [{ type: "Pink Sapphire", caratWeight: 1.5, cut: "Emerald", count: 1 }, { type: "Diamond", caratWeight: 0.5, cut: "Round", count: 28 }],
+    certifications: [{ body: "SGL" }, { body: "BIS" }],
+    rating: 4.8, reviewCount: 47, sizes: ["10","11","12","13","14","15","16"],
+  },
   // ── Necklaces ─────────────────────────────────────────────────────────────
   {
     id: "p_tennis_necklace", slug: "riviera-diamond-tennis-necklace", name: "Riviera Diamond Necklace",
     description: "A delicate station line of graduated round diamonds in 18K white gold, finishing in a graceful diamond drop at the centre. The red-carpet classic, reimagined for everyday elegance. Secured with a concealed box clasp and safety catch.",
     imageUrl: diamondNecklaceImg.src,
-    priceInPaise: 44900000, mrpInPaise: 49900000, currency: "INR", inStock: true, color: "White Gold",
+    priceInPaise: 27900, mrpInPaise: 29900, currency: "INR", inStock: true, color: "White Gold",
     categoryId: "c_necklaces", brandId: "b_bridal", collectionLine: "Riviera", gender: "Women",
     metal: "18K White Gold", purity: "18K", grossWeightG: 14.2,
     gemstones: [{ type: "Diamond", caratWeight: 5.0, cut: "Round", count: 42 }],
@@ -132,7 +145,7 @@ const _products: Product[] = [
   {
     id: "p_gold_chain", slug: "aurea-rope-gold-chain", name: "Aurea Rope 22K Gold Chain",
     description: "A classic rope-link chain in 22K gold with a lobster clasp. The everyday gold chain that layers beautifully and holds its shine for a lifetime.",
-    priceInPaise: 7900000, mrpInPaise: 8600000, currency: "INR", inStock: true, color: "Yellow Gold",
+    priceInPaise: 19900, mrpInPaise: 24900, currency: "INR", inStock: true, color: "Yellow Gold",
     categoryId: "c_necklaces", brandId: "b_signature", collectionLine: "Everyday Gold", gender: "Unisex",
     metal: "22K Yellow Gold", purity: "22K", grossWeightG: 8.0,
     certifications: [{ body: "BIS" }],
@@ -141,7 +154,7 @@ const _products: Product[] = [
   {
     id: "p_bridal_necklace", slug: "maharani-bridal-necklace-set", name: "Maharani Bridal Necklace Set",
     description: "A heritage bridal necklace in 22K gold with uncut polki diamonds and a matching pair of earrings. Handcrafted by master karigars in the Kundan tradition.",
-    priceInPaise: 42500000, currency: "INR", inStock: true, color: "Yellow Gold",
+    priceInPaise: 28900, mrpInPaise: 29900, currency: "INR", inStock: true, color: "Yellow Gold",
     categoryId: "c_necklaces", brandId: "b_bridal", collectionLine: "Bridal Heritage", gender: "Women",
     metal: "22K Yellow Gold", purity: "22K", grossWeightG: 46.0,
     gemstones: [{ type: "Polki", caratWeight: 8.5, cut: "Uncut", count: 36 }],
@@ -152,7 +165,7 @@ const _products: Product[] = [
   {
     id: "p_solitaire_studs", slug: "stella-solitaire-diamond-studs", name: "Stella Solitaire Diamond Studs",
     description: "A perfectly matched pair of round-brilliant diamond studs in four-prong 18K white gold settings, with secure screw backs. The one pair of earrings you'll never take off.",
-    priceInPaise: 15900000, mrpInPaise: 17500000, currency: "INR", inStock: true, color: "White Gold",
+    priceInPaise: 19900, mrpInPaise: 25900, currency: "INR", inStock: true, color: "White Gold",
     categoryId: "c_earrings", brandId: "b_signature", collectionLine: "Solitaire", gender: "Women",
     metal: "18K White Gold", purity: "18K", grossWeightG: 2.4,
     gemstones: [{ type: "Diamond", caratWeight: 1.0, cut: "Round", clarity: "VS2", count: 2 }],
@@ -162,7 +175,7 @@ const _products: Product[] = [
   {
     id: "p_gold_hoops", slug: "sol-everyday-gold-hoops", name: "Sol Everyday 18K Gold Hoops",
     description: "Lightweight 18K gold huggie hoops with a smooth polished finish and a click-clasp closure. The perfect throw-on-and-go hoop, sized for daily wear.",
-    priceInPaise: 4900000, mrpInPaise: 5400000, currency: "INR", inStock: true, color: "Yellow Gold",
+    priceInPaise: 12900, mrpInPaise: 17900, currency: "INR", inStock: true, color: "Yellow Gold",
     categoryId: "c_earrings", brandId: "b_signature", collectionLine: "Everyday Gold", gender: "Women",
     metal: "18K Yellow Gold", purity: "18K", grossWeightG: 2.1,
     certifications: [{ body: "BIS" }],
@@ -171,7 +184,7 @@ const _products: Product[] = [
   {
     id: "p_jhumka", slug: "rani-gold-jhumka-earrings", name: "Rani 22K Gold Jhumka Earrings",
     description: "Traditional dome jhumkas in 22K gold with intricate filigree and delicate gold bead drops. A festive classic reimagined light enough for all-day wear.",
-    priceInPaise: 11900000, mrpInPaise: 12900000, currency: "INR", inStock: true, color: "Yellow Gold",
+    priceInPaise: 19900, mrpInPaise: 24900, currency: "INR", inStock: true, color: "Yellow Gold",
     categoryId: "c_earrings", brandId: "b_bridal", collectionLine: "Bridal Heritage", gender: "Women",
     metal: "22K Yellow Gold", purity: "22K", grossWeightG: 12.6,
     certifications: [{ body: "BIS" }],
@@ -181,7 +194,7 @@ const _products: Product[] = [
     id: "p_heart_earrings", slug: "aria-blue-crystal-heart-drop-earrings", name: "Aria Blue Crystal Heart Drop Earrings",
     description: "Faceted heart-cut blue crystals suspended from gold-plated ear wires. A pop of sapphire-blue colour that catches the light — feather-light for all-day wear and a much-loved gift.",
     imageUrl: heartDropEarringsImg.src,
-    priceInPaise: 2900000, mrpInPaise: 3400000, currency: "INR", inStock: true, color: "Yellow Gold",
+    priceInPaise: 9900, mrpInPaise: 14900, currency: "INR", inStock: true, color: "Yellow Gold",
     categoryId: "c_earrings", brandId: "b_signature", collectionLine: "Gifts", gender: "Women",
     metal: "Gold-Plated Silver", purity: "925", grossWeightG: 3.4,
     gemstones: [{ type: "Blue Crystal", caratWeight: 2.0, cut: "Heart", count: 2 }],
@@ -192,7 +205,7 @@ const _products: Product[] = [
   {
     id: "p_tennis_bracelet", slug: "aria-diamond-tennis-bracelet", name: "Aria Diamond Tennis Bracelet",
     description: "A flexible line of prong-set round diamonds in 18K white gold, finished with a double-lock clasp for security. Timeless sparkle for the wrist.",
-    priceInPaise: 27900000, mrpInPaise: 30900000, currency: "INR", inStock: true, color: "White Gold",
+    priceInPaise: 25900, mrpInPaise: 29900, currency: "INR", inStock: true, color: "White Gold",
     categoryId: "c_bracelets", brandId: "b_signature", collectionLine: "Riviera", gender: "Women",
     metal: "18K White Gold", purity: "18K", grossWeightG: 9.8,
     gemstones: [{ type: "Diamond", caratWeight: 3.0, cut: "Round", count: 34 }],
@@ -202,7 +215,7 @@ const _products: Product[] = [
   {
     id: "p_gold_bracelet", slug: "nova-gold-chain-bracelet", name: "Nova 18K Gold Chain Bracelet",
     description: "A sleek flat-curb chain bracelet in 18K gold with an adjustable slider clasp. Understated everyday luxury that stacks with a watch.",
-    priceInPaise: 6900000, mrpInPaise: 7500000, currency: "INR", inStock: true, color: "Yellow Gold",
+    priceInPaise: 17900, mrpInPaise: 22900, currency: "INR", inStock: true, color: "Yellow Gold",
     categoryId: "c_bracelets", brandId: "b_signature", collectionLine: "Everyday Gold", gender: "Unisex",
     metal: "18K Yellow Gold", purity: "18K", grossWeightG: 6.2,
     certifications: [{ body: "BIS" }],
@@ -212,7 +225,7 @@ const _products: Product[] = [
   {
     id: "p_gold_kada", slug: "veer-mens-gold-kada", name: "Veer Men's 22K Gold Kada",
     description: "A bold, hand-finished 22K gold kada with a brushed-and-polished contrast finish and a secure screw closure. A modern heirloom for him.",
-    priceInPaise: 21900000, currency: "INR", inStock: true, color: "Yellow Gold",
+    priceInPaise: 24900, mrpInPaise: 29900, currency: "INR", inStock: true, color: "Yellow Gold",
     categoryId: "c_bangles", brandId: "b_signature", collectionLine: "Everyday Gold", gender: "Men",
     metal: "22K Yellow Gold", purity: "22K", grossWeightG: 23.5,
     certifications: [{ body: "BIS" }],
@@ -221,18 +234,29 @@ const _products: Product[] = [
   {
     id: "p_diamond_bangle", slug: "grace-diamond-bangle", name: "Grace Diamond Bangle",
     description: "A slim openable bangle in 18K rose gold with a pavé-set diamond crescent. Elegant enough for the boardroom, delicate enough for every day.",
-    priceInPaise: 18500000, mrpInPaise: 20500000, currency: "INR", inStock: true, color: "Rose Gold",
+    priceInPaise: 22900, mrpInPaise: 27900, currency: "INR", inStock: true, color: "Rose Gold",
     categoryId: "c_bangles", brandId: "b_signature", collectionLine: "Everyday Gold", gender: "Women",
     metal: "18K Rose Gold", purity: "18K", grossWeightG: 11.0,
     gemstones: [{ type: "Diamond", caratWeight: 0.6, cut: "Round", count: 24 }],
     certifications: [{ body: "BIS" }],
     rating: 4.6, reviewCount: 63, sizes: ["2.4","2.6","2.8"],
   },
+  {
+    id: "p_ruby_bangle", slug: "kusum-ruby-diamond-bangle", name: "Kusum Ruby & Diamond Bangle",
+    description: "A slim, flexible 18K gold bangle centred on a ruby flower cluster edged with pavé diamonds. Delicate enough for daily wear, special enough for occasions.",
+    imageUrl: rubyBangleImg.src,
+    priceInPaise: 21900, mrpInPaise: 26900, currency: "INR", inStock: true, color: "Yellow Gold",
+    categoryId: "c_bangles", brandId: "b_signature", collectionLine: "Gemstone", gender: "Women",
+    metal: "18K Yellow Gold", purity: "18K", grossWeightG: 8.5,
+    gemstones: [{ type: "Ruby", caratWeight: 0.8, cut: "Pear", count: 4 }, { type: "Diamond", caratWeight: 0.3, cut: "Round", count: 20 }],
+    certifications: [{ body: "SGL" }, { body: "BIS" }],
+    rating: 4.7, reviewCount: 39, sizes: ["2.4","2.6","2.8"],
+  },
   // ── Pendants ──────────────────────────────────────────────────────────────
   {
     id: "p_solitaire_pendant", slug: "lumen-solitaire-diamond-pendant", name: "Lumen Solitaire Diamond Pendant",
     description: "A single certified diamond suspended in a four-prong 18K white gold setting on a fine cable chain. The everyday diamond that goes with everything.",
-    priceInPaise: 9900000, mrpInPaise: 10900000, currency: "INR", inStock: true, color: "White Gold",
+    priceInPaise: 14900, mrpInPaise: 19900, currency: "INR", inStock: true, color: "White Gold",
     categoryId: "c_pendants", brandId: "b_signature", collectionLine: "Solitaire", gender: "Women",
     metal: "18K White Gold", purity: "18K", grossWeightG: 2.0,
     gemstones: [{ type: "Diamond", caratWeight: 0.4, cut: "Round", clarity: "VS1", count: 1 }],
@@ -242,7 +266,7 @@ const _products: Product[] = [
   {
     id: "p_initial_pendant", slug: "muse-gold-initial-pendant", name: "Muse 18K Gold Initial Pendant",
     description: "A dainty script-initial pendant in 18K gold on an adjustable chain. A personal everyday piece and a much-loved gift.",
-    priceInPaise: 3900000, mrpInPaise: 4400000, currency: "INR", inStock: true, color: "Yellow Gold",
+    priceInPaise: 9900, mrpInPaise: 14900, currency: "INR", inStock: true, color: "Yellow Gold",
     categoryId: "c_pendants", brandId: "b_signature", collectionLine: "Everyday Gold", gender: "Women",
     metal: "18K Yellow Gold", purity: "18K", grossWeightG: 1.6,
     certifications: [{ body: "BIS" }],
@@ -253,7 +277,7 @@ const _products: Product[] = [
     id: "p_mangalsutra", slug: "saubhagya-diamond-mangalsutra", name: "Saubhagya Diamond Mangalsutra",
     description: "A contemporary mangalsutra with a diamond-set pendant in 18K gold on a traditional black-bead chain. Sacred symbolism, everyday elegance.",
     imageUrl: mangalsutraImg.src,
-    priceInPaise: 8500000, mrpInPaise: 9300000, currency: "INR", inStock: true, color: "Yellow Gold",
+    priceInPaise: 19900, mrpInPaise: 24900, currency: "INR", inStock: true, color: "Yellow Gold",
     categoryId: "c_mangalsutra", brandId: "b_bridal", collectionLine: "Bridal Heritage", gender: "Women",
     metal: "18K Yellow Gold", purity: "18K", grossWeightG: 7.4,
     gemstones: [{ type: "Diamond", caratWeight: 0.35, cut: "Round", count: 14 }],
@@ -264,7 +288,7 @@ const _products: Product[] = [
     id: "p_mangalsutra_leaf", slug: "vallari-leaf-heart-mangalsutra", name: "Vallari Leaf & Heart Mangalsutra",
     description: "A delicate mangalsutra with a pavé leaf-vine motif in 18K gold, finished with a polished heart charm, on a traditional black-bead chain. Light enough for everyday wear — office to festive.",
     imageUrl: mangalsutraLeafImg.src,
-    priceInPaise: 5900000, mrpInPaise: 6500000, currency: "INR", inStock: true, color: "Yellow Gold",
+    priceInPaise: 14900, mrpInPaise: 19900, currency: "INR", inStock: true, color: "Yellow Gold",
     categoryId: "c_mangalsutra", brandId: "b_signature", collectionLine: "Everyday Gold", gender: "Women",
     metal: "18K Yellow Gold", purity: "18K", grossWeightG: 5.2,
     gemstones: [{ type: "Diamond", caratWeight: 0.25, cut: "Marquise", count: 12 }],
@@ -275,7 +299,7 @@ const _products: Product[] = [
   {
     id: "p_silver_studs", slug: "petite-silver-cz-studs", name: "Petite Sterling Silver CZ Studs",
     description: "Sparkling cubic-zirconia studs in rhodium-plated 925 sterling silver. A perfect first-jewellery gift, hypoallergenic and tarnish-resistant.",
-    priceInPaise: 1900000, mrpInPaise: 2400000, currency: "INR", inStock: true, color: "Silver",
+    priceInPaise: 9900, mrpInPaise: 14900, currency: "INR", inStock: true, color: "Silver",
     categoryId: "c_gifts", brandId: "b_signature", collectionLine: "Gifts", gender: "Women",
     metal: "Sterling Silver", purity: "925", grossWeightG: 1.8,
     certifications: [{ body: "HALLMARK" }],
@@ -284,7 +308,7 @@ const _products: Product[] = [
   {
     id: "p_silver_pendant", slug: "aria-silver-heart-pendant", name: "Aria Silver Heart Pendant",
     description: "A polished heart pendant in 925 sterling silver on a delicate box chain, presented in a signature gift box. Thoughtful and timeless.",
-    priceInPaise: 2400000, mrpInPaise: 2900000, currency: "INR", inStock: true, color: "Silver",
+    priceInPaise: 12900, mrpInPaise: 17900, currency: "INR", inStock: true, color: "Silver",
     categoryId: "c_gifts", brandId: "b_signature", collectionLine: "Gifts", gender: "Women",
     metal: "Sterling Silver", purity: "925", grossWeightG: 3.2,
     certifications: [{ body: "HALLMARK" }],
@@ -316,9 +340,9 @@ export const collections: Collection[] = [
     filter: { categorySlug: "engagement-rings" },
   },
   {
-    id: "col_everyday_gold", slug: "everyday-gold-under-100000", title: "Everyday Gold Under ₹1,00,000",
-    intro: "Light, hallmarked gold you can actually wear every day — hoops, chains, bracelets and pendants, all under ₹1,00,000. We pulled every in-stock 18K and 22K everyday piece below that price so you can compare weight, purity and price at a glance. All BIS-hallmarked with a transparent price breakup.",
-    filter: { maxPriceInPaise: 10000000 },
+    id: "col_everyday_gold", slug: "everyday-gold-under-200", title: "Everyday Gold Under ₹200",
+    intro: "Light, everyday jewellery you can actually wear daily — hoops, chains, bracelets and pendants, all under ₹200. We pulled every in-stock everyday piece below that price so you can compare designs, finishes and price at a glance. All with a transparent price breakup and 30-day returns.",
+    filter: { maxPriceInPaise: 20000 },
   },
   {
     id: "col_white_gold", slug: "best-white-gold-diamond-jewellery", title: "Best White Gold Diamond Jewellery",
@@ -326,9 +350,9 @@ export const collections: Collection[] = [
     filter: { color: "White Gold" },
   },
   {
-    id: "col_thin", slug: "best-emerald-jewellery-under-50000", title: "Best Emerald Jewellery Under ₹50,000",
+    id: "col_thin", slug: "best-emerald-jewellery-under-300", title: "Best Emerald Jewellery Under ₹300",
     // Deliberately thin (out-of-stock / sparse) to demonstrate the indexability guard.
-    filter: { color: "Emerald", maxPriceInPaise: 5000000 },
+    filter: { color: "Emerald", maxPriceInPaise: 30000 },
   },
 ];
 

@@ -8,6 +8,7 @@ import { organizationSchema, websiteSchema } from "@/lib/schema-org";
 import { CartProvider } from "@/components/CartProvider";
 import { CartDrawer } from "@/components/CartDrawer";
 import { CartButton } from "@/components/CartButton";
+import { AnnouncementBar } from "@/components/AnnouncementBar";
 
 const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
 const cormorant = Cormorant_Garamond({
@@ -43,6 +44,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body style={{ fontFamily: "var(--font-inter, Inter), ui-sans-serif, system-ui, sans-serif" }}>
         <JsonLd data={[organizationSchema(), websiteSchema()]} />
         <CartProvider>
+          {/* ── Announcement bar (scrolls away above the sticky header) ── */}
+          <AnnouncementBar />
+
           {/* ── Header ── */}
           <header style={{
             position:"sticky", top:0, zIndex:30,
@@ -111,7 +115,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <div>
                 <p style={{ fontWeight:700, fontSize:"0.875rem", marginBottom:"0.75rem" }}>Collections</p>
                 <div style={{ display:"flex", flexDirection:"column", gap:"0.4rem" }}>
-                  {[["Engagement Rings","/c/best-diamond-engagement-rings"],["Everyday Gold","/c/everyday-gold-under-100000"],["White Gold & Diamond","/c/best-white-gold-diamond-jewellery"]].map(([l,h])=>(
+                  {[["Engagement Rings","/c/best-diamond-engagement-rings"],["Everyday Gold","/c/everyday-gold-under-200"],["White Gold & Diamond","/c/best-white-gold-diamond-jewellery"]].map(([l,h])=>(
                     <Link key={h} href={h} style={{ fontSize:"0.875rem", color:"var(--fg-muted)", textDecoration:"none" }}>{l}</Link>
                   ))}
                 </div>

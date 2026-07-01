@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { formatPrice } from "@/lib/site";
+import { SmartImage } from "@/components/SmartImage";
 
 export interface ProductCardData {
   slug: string; name: string; priceInPaise: number; mrpInPaise?: number;
@@ -32,7 +32,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
         {/* Image */}
         <div style={{ position:"relative", aspectRatio:"1/1", background:"var(--surface-2)", overflow:"hidden" }}>
           {product.imageUrl ? (
-            <Image
+            <SmartImage
               src={product.imageUrl} alt={product.name}
               fill sizes="(max-width:640px) 50vw, (max-width:1024px) 33vw, 25vw"
               style={{ objectFit:"cover", transition:"transform 0.3s ease" }}

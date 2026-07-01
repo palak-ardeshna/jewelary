@@ -21,7 +21,7 @@ export default function CartPage() {
     );
   }
 
-  const delivery = totalPrice >= 49900 ? 0 : 4900;
+  const delivery = totalPrice >= 19900 ? 0 : 4900;
   const grandTotal = totalPrice + delivery;
 
   return (
@@ -70,7 +70,7 @@ export default function CartPage() {
               <span>Delivery</span>
               <span style={{ color: delivery === 0 ? "var(--success)" : "var(--fg)" }}>{delivery === 0 ? "FREE" : fmt(delivery)}</span>
             </div>
-            {delivery > 0 && <p style={{ fontSize:"0.8rem", color:"var(--fg-muted)" }}>Add {fmt(49900 - totalPrice)} more for free delivery</p>}
+            {delivery > 0 && <p style={{ fontSize:"0.8rem", color:"var(--fg-muted)" }}>Add {fmt(19900 - totalPrice)} more for free delivery</p>}
           </div>
           <hr className="divider" style={{ margin:"0.75rem 0" }} />
           <div style={{ display:"flex", justifyContent:"space-between", fontWeight:700, fontSize:"1.1rem", marginBottom:"1.25rem" }}>

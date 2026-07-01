@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { searchProducts } from "@/data/store";
 import { ProductCard } from "@/components/ProductCard";
+import { ProductGridSkeleton } from "@/components/Skeletons";
 
 // Static export can't read query strings at build time, so search runs
 // entirely client-side off the static product data.
@@ -46,7 +47,7 @@ function SearchResults() {
 
 export default function SearchPage() {
   return (
-    <Suspense fallback={<div style={{ padding:"4rem 1rem", textAlign:"center", color:"var(--fg-muted)" }}>Loading…</div>}>
+    <Suspense fallback={<div className="animate-fade-in"><div className="skeleton" style={{ height:"1.75rem", width:"min(280px,60%)", marginBottom:"1.5rem", borderRadius:"var(--radius)" }} /><ProductGridSkeleton count={8} /></div>}>
       <SearchResults />
     </Suspense>
   );

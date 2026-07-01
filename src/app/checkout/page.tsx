@@ -24,7 +24,7 @@ export default function CheckoutPage() {
   const [form, setForm] = useState({ name:"", email:"", phone:"", address:"", city:"", state:"Delhi", pin:"" });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const delivery = totalPrice >= 49900 ? 0 : 4900;
+  const delivery = totalPrice >= 19900 ? 0 : 4900;
   const grandTotal = totalPrice + delivery;
 
   // Per-step validation — only the fields on the current step are checked.
@@ -86,7 +86,7 @@ export default function CheckoutPage() {
     </div>
   );
 
-  const cardStyle: React.CSSProperties = { padding:"1.75rem", background:"var(--surface)", borderRadius:"var(--radius-lg)", border:"1px solid var(--border)" };
+  const cardStyle: React.CSSProperties = { padding:"clamp(1.15rem, 4vw, 1.75rem)", background:"var(--surface)", borderRadius:"var(--radius-lg)", border:"1px solid var(--border)" };
   const rowStyle: React.CSSProperties = { display:"flex", justifyContent:"space-between", gap:"1rem", fontSize:"0.875rem" };
 
   return (
@@ -123,7 +123,7 @@ export default function CheckoutPage() {
                 </span>
               </button>
               {i < STEPS.length - 1 && (
-                <span style={{ flex:1, height:2, margin:"0 0.75rem", background: step > s.id ? "var(--accent)" : "var(--border)", transition:"background 0.2s" }} />
+                <span className="step-rail" style={{ flex:1, height:2, margin:"0 0.75rem", background: step > s.id ? "var(--accent)" : "var(--border)", transition:"background 0.2s" }} />
               )}
             </div>
           );
@@ -214,7 +214,7 @@ export default function CheckoutPage() {
           )}
 
           {/* ── Step navigation ── */}
-          <div style={{ display:"flex", gap:"0.75rem", alignItems:"center" }}>
+          <div style={{ display:"flex", gap:"0.75rem", alignItems:"center" }} className="checkout-nav">
             {step > 1 && (
               <button type="button" className="btn-outline" onClick={back} disabled={loading}>← Back</button>
             )}
@@ -232,7 +232,7 @@ export default function CheckoutPage() {
         </div>
 
         {/* Right: order summary (always visible) */}
-        <div style={{ ...cardStyle, height:"fit-content" }}>
+        <div style={{ ...cardStyle, height:"fit-content" }} className="checkout-summary">
           <h2 style={{ fontSize:"1rem", fontWeight:700, marginBottom:"1rem" }}>Order Summary</h2>
           <ul style={{ listStyle:"none", padding:0, margin:0, display:"flex", flexDirection:"column", gap:"0.5rem", marginBottom:"1rem" }}>
             {items.map(item=>(
@@ -256,8 +256,23 @@ export default function CheckoutPage() {
       </div>
 
       <style>{`
-        @media(min-width:768px){ .checkout-grid{ grid-template-columns:1fr 340px !important; } }
-        @media(max-width:560px){ .step-label{ display:none; } .field-grid{ grid-template-columns:1fr !important; } }
+        @media(min-width:768px){
+          .checkout-grid{ grid-template-columns:1fr 340px !important; }
+          .checkout-summary{ position:sticky; top:5.5rem; }
+        }
+        /* Phones: hide step labels, single-column fields, and stack the nav
+           buttons full-width so the long "Place Order" button never overflows. */
+        @media(max-width:560px){
+          .step-label{ display:none; }
+          .field-grid{ grid-template-columns:1fr !important; }
+          .checkout-nav{ flex-direction:column-reverse; align-items:stretch; gap:0.6rem; }
+          .checkout-nav > button{ width:100%; margin-left:0 !important; }
+          .checkout-nav .btn-accent{ padding:0.9rem 1rem !important; }
+        }
+        /* Very small phones: tighten the step indicator so 4 dots + rails fit. */
+        @media(max-width:380px){
+          .step-rail{ margin:0 0.4rem !important; }
+        }
       `}</style>
     </div>
   );

@@ -49,7 +49,7 @@ export function CategoryProducts({ categoryId, path }: { categoryId: string; pat
         {/* Price */}
         <div style={{ display:"flex", alignItems:"center", gap:"0.5rem" }}>
           <span style={{ fontSize:"0.8rem", fontWeight:600, color:"var(--fg-muted)" }}>Max Price:</span>
-          {[[25000,"Under ₹25K"],[50000,"Under ₹50K"],[100000,"Under ₹1L"]].map(([val,label])=>(
+          {[[150,"Under ₹150"],[200,"Under ₹200"],[250,"Under ₹250"]].map(([val,label])=>(
             <Link key={val} href={buildUrl({ maxPrice: maxPrice === String(val) ? undefined : String(val) })} style={{
               padding:"0.3rem 0.75rem", borderRadius:99, fontSize:"0.8rem", fontWeight:600, textDecoration:"none",
               background: maxPrice === String(val) ? "var(--accent)" : "var(--bg)",

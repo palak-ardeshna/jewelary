@@ -7,7 +7,7 @@ export default function HomePage() {
   const categories = getTopCategories();
   const collections = getCollections(3);
   const featured = getInStockProducts().slice(0, 8);
-  const gifting = getInStockProducts().filter((p) => p.priceInPaise <= 5000000).slice(0, 4);
+  const gifting = getInStockProducts().filter((p) => p.priceInPaise <= 15000).slice(0, 4);
 
   // Placeholder imagery (Unsplash) keyed by jewellery category slug.
   const catImages: Record<string, string> = {
@@ -36,7 +36,7 @@ export default function HomePage() {
             Jewellery made<br />to be inherited
           </h1>
           <p style={{ fontSize:"1.05rem", opacity:0.85, marginBottom:"2.25rem", lineHeight:1.7, maxWidth:480 }}>
-            BIS-hallmarked gold and platinum, set with IGI &amp; GIA-certified diamonds. A transparent price breakup, lifetime exchange, and craftsmanship built to last generations.
+            Thoughtfully designed jewellery for every day and every occasion — premium gold-finish detailing and brilliant hand-set stones, crafted to look far beyond their price. Transparent pricing, easy 30-day returns, and Cash on Delivery.
           </p>
           <div style={{ display:"flex", gap:"1rem", flexWrap:"wrap" }}>
             <Link href="/c/best-diamond-engagement-rings" className="btn-accent" style={{ textDecoration:"none" }}>Explore Engagement Rings →</Link>
@@ -80,7 +80,7 @@ export default function HomePage() {
         <section style={{ marginBottom:"3.5rem" }}>
           <div style={{ display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:"1.25rem" }}>
             <h2 className="font-display" style={{ fontSize:"1.9rem", fontWeight:500 }}>
-              Gifts Under ₹50,000
+              Gifts Under ₹150
             </h2>
             <Link href="/gifts" style={{ fontSize:"0.85rem", color:"var(--accent-dark)", textDecoration:"none", fontWeight:600 }}>View all →</Link>
           </div>
