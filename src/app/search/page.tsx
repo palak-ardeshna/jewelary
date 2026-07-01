@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { searchProducts } from "@/data/store";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductGridSkeleton } from "@/components/Skeletons";
+import { Icon } from "@/components/Icon";
 
 // Static export can't read query strings at build time, so search runs
 // entirely client-side off the static product data.
@@ -27,12 +28,12 @@ function SearchResults() {
 
       {!query ? (
         <div style={{ textAlign:"center", padding:"4rem 1rem", color:"var(--fg-muted)" }}>
-          <div style={{ fontSize:"3rem", marginBottom:"1rem" }}>🔍</div>
+          <div style={{ marginBottom:"1rem", color:"var(--fg-subtle)", display:"flex", justifyContent:"center" }}><Icon name="search" size={44} strokeWidth={1.25} /></div>
           <p>Type something in the search bar above</p>
         </div>
       ) : results.length === 0 ? (
         <div style={{ textAlign:"center", padding:"4rem 1rem", color:"var(--fg-muted)" }}>
-          <div style={{ fontSize:"3rem", marginBottom:"1rem" }}>😕</div>
+          <div style={{ marginBottom:"1rem", color:"var(--fg-subtle)", display:"flex", justifyContent:"center" }}><Icon name="search" size={44} strokeWidth={1.25} /></div>
           <p style={{ fontWeight:600, fontSize:"1.1rem" }}>No results for "{query}"</p>
           <p style={{ marginTop:"0.5rem", fontSize:"0.875rem" }}>Try: rings, diamond, gold chain, earrings, mangalsutra</p>
         </div>

@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useCart } from "./CartProvider";
+import { Icon } from "@/components/Icon";
 
 interface Props {
   product: {
@@ -61,11 +62,11 @@ export function AddToCartButton({ product }: Props) {
               >{s}</button>
             ))}
           </div>
-          {sizeError && <p style={{ color:"var(--error)", fontSize:"0.8rem", marginTop:"0.4rem" }}>⚠ Please select a size</p>}
+          {sizeError && <p style={{ color:"var(--error)", fontSize:"0.8rem", marginTop:"0.4rem", display:"flex", alignItems:"center", gap:"0.35rem" }}><Icon name="alert" size={13} /> Please select a size</p>}
         </div>
       )}
       <button onClick={handleAdd} className="btn-accent" style={{ width:"100%", fontSize:"1rem", padding:"0.875rem" }}>
-        🛒 Add to Cart
+        <Icon name="bag" size={17} /> Add to Cart
       </button>
     </div>
   );

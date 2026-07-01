@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useCart } from "@/components/CartProvider";
+import { Icon } from "@/components/Icon";
 import { useRouter } from "next/navigation";
 
 function fmt(p: number) {
@@ -10,10 +11,10 @@ function fmt(p: number) {
 const STATES = ["Delhi","Mumbai","Bengaluru","Chennai","Hyderabad","Kolkata","Pune","Ahmedabad","Jaipur","Lucknow","Other"];
 
 const STEPS = [
-  { id: 1, label: "Contact", icon: "①" },
-  { id: 2, label: "Shipping", icon: "②" },
-  { id: 3, label: "Payment", icon: "③" },
-  { id: 4, label: "Review", icon: "④" },
+  { id: 1, label: "Contact" },
+  { id: 2, label: "Shipping" },
+  { id: 3, label: "Payment" },
+  { id: 4, label: "Review" },
 ] as const;
 
 export default function CheckoutPage() {
@@ -116,7 +117,7 @@ export default function CheckoutPage() {
                   border: active ? "2px solid var(--accent)" : "2px solid transparent",
                   transition:"all 0.2s",
                 }}>
-                  {done ? "✓" : s.id}
+                  {done ? <Icon name="check" size={16} /> : s.id}
                 </span>
                 <span style={{ fontSize:"0.82rem", fontWeight: active ? 700 : 500, color: active ? "var(--fg)" : "var(--fg-muted)", letterSpacing:"0.02em" }} className="step-label">
                   {s.label}
@@ -172,7 +173,7 @@ export default function CheckoutPage() {
               <h2 style={{ fontSize:"1.1rem", fontWeight:700, marginBottom:"1.25rem" }}>Payment Method</h2>
               <label style={{ display:"flex", alignItems:"center", gap:"0.9rem", padding:"1.1rem 1.15rem", borderRadius:"var(--radius)", border:"2px solid var(--accent)", background:"var(--surface-2)", cursor:"default", fontWeight:600 }}>
                 <input type="radio" name="payment" checked readOnly style={{ accentColor:"var(--accent)" }} />
-                <span style={{ fontSize:"1.25rem" }}>🏠</span>
+                <Icon name="wallet" size={22} style={{ color:"var(--accent-dark)" }} />
                 <span>
                   <span style={{ display:"block", fontSize:"0.95rem" }}>Cash on Delivery</span>
                   <span style={{ display:"block", fontSize:"0.8rem", color:"var(--fg-muted)", fontWeight:500, marginTop:"0.15rem" }}>
@@ -180,8 +181,8 @@ export default function CheckoutPage() {
                   </span>
                 </span>
               </label>
-              <div style={{ marginTop:"1rem", padding:"0.9rem 1rem", background:"var(--bg)", border:"1px dashed var(--border-strong)", borderRadius:"var(--radius)", fontSize:"0.82rem", color:"var(--fg-muted)", lineHeight:1.6 }}>
-                🔒 Every order ships fully insured and tamper-proof. Please keep the exact amount ready — our delivery partner accepts cash only.
+              <div style={{ marginTop:"1rem", padding:"0.9rem 1rem", background:"var(--bg)", border:"1px dashed var(--border-strong)", borderRadius:"var(--radius)", fontSize:"0.82rem", color:"var(--fg-muted)", lineHeight:1.6, display:"flex", gap:"0.5rem", alignItems:"flex-start" }}>
+                <Icon name="lock" size={15} style={{ marginTop:"0.15rem" }} /><span>Every order ships fully insured and tamper-proof. Please keep the exact amount ready — our delivery partner accepts cash only.</span>
               </div>
             </div>
           )}
@@ -208,7 +209,7 @@ export default function CheckoutPage() {
                   <h2 style={{ fontSize:"1rem", fontWeight:700 }}>Payment</h2>
                   <button type="button" onClick={()=>setStep(3)} style={{ background:"none", border:"none", color:"var(--accent-dark)", fontWeight:600, fontSize:"0.82rem", cursor:"pointer" }}>Edit</button>
                 </div>
-                <p style={{ fontSize:"0.9rem", color:"var(--fg-muted)" }}>🏠 Cash on Delivery</p>
+                <p style={{ fontSize:"0.9rem", color:"var(--fg-muted)", display:"flex", alignItems:"center", gap:"0.4rem" }}><Icon name="wallet" size={15} /> Cash on Delivery</p>
               </div>
             </div>
           )}
@@ -251,7 +252,7 @@ export default function CheckoutPage() {
           <div style={{ display:"flex", justifyContent:"space-between", fontWeight:700, fontSize:"1.1rem" }}>
             <span>Total</span><span style={{ color:"var(--accent-dark)" }}>{fmt(grandTotal)}</span>
           </div>
-          <p style={{ fontSize:"0.78rem", color:"var(--fg-muted)", textAlign:"center", marginTop:"1rem" }}>🔒 Insured shipping · Cash on Delivery</p>
+          <p style={{ fontSize:"0.78rem", color:"var(--fg-muted)", textAlign:"center", marginTop:"1rem", display:"flex", alignItems:"center", justifyContent:"center", gap:"0.4rem" }}><Icon name="lock" size={13} /> Insured shipping · Cash on Delivery</p>
         </div>
       </div>
 

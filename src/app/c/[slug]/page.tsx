@@ -6,6 +6,7 @@ import { resolveCollection } from "@/lib/collections";
 import { JsonLd } from "@/components/JsonLd";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ProductCard } from "@/components/ProductCard";
+import { Icon } from "@/components/Icon";
 import { breadcrumbSchema, itemListSchema, type BreadcrumbItem } from "@/lib/schema-org";
 
 export function generateStaticParams() {
@@ -49,7 +50,7 @@ export default async function CollectionPage({ params }: { params: Params }) {
       {/* Dev-only: only show noindex banner in development */}
       {!collection.indexable && process.env.NODE_ENV === "development" && (
         <div style={{ padding:"0.75rem 1rem", marginBottom:"1.5rem", borderRadius:"var(--radius)", border:"1px solid #fcd34d", background:"#fffbeb", color:"#92400e", fontSize:"0.8rem" }}>
-          <strong>⚠ Dev only:</strong> noindex — {collection.noindexReasons.join(", ")}
+          <strong style={{ display:"inline-flex", alignItems:"center", gap:"0.3rem" }}><Icon name="alert" size={13} /> Dev only:</strong> noindex — {collection.noindexReasons.join(", ")}
         </div>
       )}
 

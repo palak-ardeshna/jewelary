@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { getProductsByCategoryId } from "@/data/store";
 import { ProductCard } from "@/components/ProductCard";
+import { Icon } from "@/components/Icon";
 
 const METALS = ["Yellow Gold","White Gold","Rose Gold","Platinum","Silver"];
 
@@ -74,8 +75,8 @@ export function CategoryProducts({ categoryId, path }: { categoryId: string; pat
 
         {/* Clear */}
         {(color || maxPrice || sort) && (
-          <Link href={path} style={{ marginLeft:"auto", fontSize:"0.8rem", color:"var(--error)", textDecoration:"none", fontWeight:600, display:"flex", alignItems:"center" }}>
-            ✕ Clear filters
+          <Link href={path} style={{ marginLeft:"auto", fontSize:"0.8rem", color:"var(--error)", textDecoration:"none", fontWeight:600, display:"flex", alignItems:"center", gap:"0.3rem" }}>
+            <Icon name="x" size={13} /> Clear filters
           </Link>
         )}
       </div>
@@ -87,7 +88,7 @@ export function CategoryProducts({ categoryId, path }: { categoryId: string; pat
 
       {products.length === 0 ? (
         <div style={{ textAlign:"center", padding:"4rem 1rem", color:"var(--fg-muted)" }}>
-          <div style={{ fontSize:"3rem", marginBottom:"1rem" }}>🔍</div>
+          <div style={{ marginBottom:"1rem", color:"var(--fg-subtle)", display:"flex", justifyContent:"center" }}><Icon name="search" size={44} strokeWidth={1.25} /></div>
           <p style={{ fontWeight:600, fontSize:"1.1rem" }}>No products match your filters</p>
           <Link href={path} style={{ display:"inline-block", marginTop:"1rem", color:"var(--primary)", textDecoration:"none", fontWeight:600 }}>Clear filters</Link>
         </div>

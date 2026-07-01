@@ -1,6 +1,7 @@
 "use client";
 import { useCart } from "@/components/CartProvider";
-import Image from "next/image";
+import { SmartImage } from "@/components/SmartImage";
+import { Icon } from "@/components/Icon";
 import Link from "next/link";
 
 function fmt(p: number) {
@@ -13,7 +14,7 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div style={{ textAlign:"center", padding:"6rem 1rem", color:"var(--fg-muted)" }}>
-        <div style={{ fontSize:"4rem", marginBottom:"1rem" }}>🛍️</div>
+        <div style={{ marginBottom:"1rem", color:"var(--fg-subtle)" }}><Icon name="bag" size={56} strokeWidth={1.25} /></div>
         <h1 style={{ fontSize:"1.5rem", fontWeight:700, marginBottom:"0.5rem" }}>Your cart is empty</h1>
         <p style={{ marginBottom:"2rem" }}>Looks like you haven't added anything yet.</p>
         <Link href="/" className="btn-primary" style={{ textDecoration:"none" }}>Start Shopping →</Link>
@@ -36,8 +37,8 @@ export default function CartPage() {
           <ul style={{ listStyle:"none", padding:0, margin:0, display:"flex", flexDirection:"column", gap:"1rem" }}>
             {items.map((item) => (
               <li key={`${item.id}-${item.size}`} style={{ display:"flex", gap:"1rem", padding:"1rem", background:"var(--surface)", borderRadius:"var(--radius)", border:"1px solid var(--border)" }}>
-                <div style={{ width:90, height:90, borderRadius:"var(--radius-sm)", overflow:"hidden", background:"var(--surface-2)", flexShrink:0 }}>
-                  {item.imageUrl && <Image src={item.imageUrl} alt={item.name} width={90} height={90} style={{ objectFit:"cover", width:"100%", height:"100%" }} />}
+                <div style={{ position:"relative", width:90, height:90, borderRadius:"var(--radius-sm)", overflow:"hidden", background:"var(--surface-2)", flexShrink:0 }}>
+                  {item.imageUrl && <SmartImage src={item.imageUrl} alt={item.name} width={90} height={90} style={{ objectFit:"cover", width:"100%", height:"100%" }} />}
                 </div>
                 <div style={{ flex:1, minWidth:0 }}>
                   <p style={{ fontWeight:600, marginBottom:"0.25rem" }}>{item.name}</p>
@@ -80,8 +81,8 @@ export default function CartPage() {
             Proceed to Checkout →
           </Link>
           <div style={{ marginTop:"1rem", display:"flex", flexDirection:"column", gap:"0.4rem" }}>
-            {["🔒 Insured secure shipping","↩ 30-day returns","↻ Lifetime exchange"].map(t=>(
-              <p key={t} style={{ fontSize:"0.78rem", color:"var(--fg-muted)", display:"flex", gap:"0.4rem" }}>{t}</p>
+            {[["lock","Insured secure shipping"],["return","30-day returns"],["exchange","Lifetime exchange"]].map(([icon,t])=>(
+              <p key={t} style={{ fontSize:"0.78rem", color:"var(--fg-muted)", display:"flex", alignItems:"center", gap:"0.45rem" }}><Icon name={icon} size={14} />{t}</p>
             ))}
           </div>
         </div>

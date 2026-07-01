@@ -9,6 +9,8 @@ import { CartProvider } from "@/components/CartProvider";
 import { CartDrawer } from "@/components/CartDrawer";
 import { CartButton } from "@/components/CartButton";
 import { AnnouncementBar } from "@/components/AnnouncementBar";
+import { RouteProgress } from "@/components/RouteProgress";
+import { Icon } from "@/components/Icon";
 
 const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
 const cormorant = Cormorant_Garamond({
@@ -44,6 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body style={{ fontFamily: "var(--font-inter, Inter), ui-sans-serif, system-ui, sans-serif" }}>
         <JsonLd data={[organizationSchema(), websiteSchema()]} />
         <CartProvider>
+          <RouteProgress />
           {/* ── Announcement bar (scrolls away above the sticky header) ── */}
           <AnnouncementBar />
 
@@ -128,7 +131,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   ))}
                 </div>
                 <div style={{ marginTop:"1rem", display:"flex", gap:"0.5rem" }}>
-                  <span className="badge badge-green">🔒 Insured shipping</span>
+                  <span className="badge badge-green" style={{ gap:"0.3rem" }}><Icon name="lock" size={12} /> Insured shipping</span>
                 </div>
               </div>
             </div>

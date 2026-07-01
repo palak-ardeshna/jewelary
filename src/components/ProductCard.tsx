@@ -14,7 +14,7 @@ function StarRating({ rating }: { rating: number }) {
   return (
     <span style={{ display:"flex", alignItems:"center", gap:"0.25rem" }}>
       <span className="stars" style={{ fontSize:"0.75rem" }}>
-        {"★".repeat(full)}{half ? "⭑" : ""}{"☆".repeat(5 - full - (half?1:0))}
+        {"★".repeat(full + (half ? 1 : 0))}{"☆".repeat(5 - full - (half ? 1 : 0))}
       </span>
       <span style={{ fontSize:"0.7rem", color:"var(--fg-muted)" }}>({rating.toFixed(1)})</span>
     </span>

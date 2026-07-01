@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import Image from "next/image";
+import { SmartImage } from "@/components/SmartImage";
+import { Icon } from "@/components/Icon";
 import { getProductBySlug, getRelatedProducts, products } from "@/data/store";
 import { absUrl, formatPrice } from "@/lib/site";
 import { JsonLd } from "@/components/JsonLd";
@@ -42,9 +43,9 @@ function StarRow({ rating, reviewCount }: { rating: number; reviewCount?: number
 function TrustBadges() {
   return (
     <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.5rem", padding:"1rem", background:"var(--surface)", borderRadius:"var(--radius)", border:"1px solid var(--border)" }}>
-      {[["🔒","Insured free shipping"],["↻","Lifetime exchange"],["↩","30-day returns"],["✔","BIS hallmark & certification"]].map(([icon,label])=>(
-        <div key={label} style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem", fontSize:"0.8rem" }}>
-          <span>{icon}</span><span style={{ color:"var(--fg-muted)" }}>{label}</span>
+      {[["lock","Insured free shipping"],["exchange","Lifetime exchange"],["return","30-day returns"],["shield-check","Certified quality"]].map(([icon,label])=>(
+        <div key={label} style={{ display:"flex", alignItems:"center", gap:"0.5rem", fontSize:"0.8rem" }}>
+          <Icon name={icon} size={16} style={{ color:"var(--accent-dark)" }} /><span style={{ color:"var(--fg-muted)" }}>{label}</span>
         </div>
       ))}
     </div>
@@ -74,7 +75,7 @@ export default async function ProductPage({ params }: { params: Params }) {
         {/* Image */}
         <div style={{ position:"relative", aspectRatio:"1/1", background:"var(--surface-2)", borderRadius:"var(--radius-lg)", overflow:"hidden" }}>
           {product.imageUrl ? (
-            <Image src={product.imageUrl} alt={product.name} fill sizes="(max-width:768px) 100vw, 50vw" style={{ objectFit:"cover" }} priority />
+            <SmartImage src={product.imageUrl} alt={product.name} fill sizes="(max-width:768px) 100vw, 50vw" style={{ objectFit:"cover" }} priority />
           ) : (
             <div style={{ display:"flex", alignItems:"center", justifyContent:"center", height:"100%", color:"var(--fg-subtle)" }}>No image</div>
           )}
@@ -92,8 +93,8 @@ export default async function ProductPage({ params }: { params: Params }) {
           {product.certifications && product.certifications.length > 0 && (
             <div style={{ display:"flex", gap:"0.4rem", flexWrap:"wrap" }}>
               {product.certifications.map((c) => (
-                <span key={c.body} className="badge" style={{ background:"var(--surface-2)", color:"var(--accent-dark)", border:"1px solid var(--border-strong)" }}>
-                  ✔ {c.body}{c.number ? ` · ${c.number}` : " Certified"}
+                <span key={c.body} className="badge" style={{ background:"var(--surface-2)", color:"var(--accent-dark)", border:"1px solid var(--border-strong)", gap:"0.3rem" }}>
+                  <Icon name="shield-check" size={12} /> {c.body}{c.number ? ` · ${c.number}` : " Certified"}
                 </span>
               ))}
             </div>
@@ -111,8 +112,8 @@ export default async function ProductPage({ params }: { params: Params }) {
           {/* Stock */}
           <div>
             {product.inStock
-              ? <span className="badge badge-green">✓ In Stock — Ready to ship</span>
-              : <span className="badge badge-red">✕ Out of Stock</span>
+              ? <span className="badge badge-green" style={{ gap:"0.3rem" }}><Icon name="check" size={12} /> In Stock — Ready to ship</span>
+              : <span className="badge badge-red" style={{ gap:"0.3rem" }}><Icon name="x" size={12} /> Out of Stock</span>
             }
           </div>
 

@@ -1,7 +1,8 @@
 import Link from "next/link";
-import Image from "next/image";
 import { getTopCategories, getCollections, getInStockProducts } from "@/data/store";
 import { ProductCard } from "@/components/ProductCard";
+import { SmartImage } from "@/components/SmartImage";
+import { Icon } from "@/components/Icon";
 
 export default function HomePage() {
   const categories = getTopCategories();
@@ -49,9 +50,9 @@ export default function HomePage() {
 
       {/* ── Trust strip ── */}
       <div style={{ display:"flex", gap:"1rem", flexWrap:"wrap", justifyContent:"center", marginBottom:"3.5rem" }}>
-        {[["✔","BIS Hallmarked & Certified"],["₹","Transparent Price Breakup"],["↻","Lifetime Exchange"],["🔒","Insured Free Shipping"]].map(([icon,text])=>(
+        {[["shield-check","BIS Hallmarked & Certified"],["tag","Transparent Price Breakup"],["exchange","Lifetime Exchange"],["lock","Insured Free Shipping"]].map(([icon,text])=>(
           <div key={text} style={{ display:"flex", alignItems:"center", gap:"0.5rem", padding:"0.6rem 1.15rem", background:"var(--surface)", borderRadius:"99px", border:"1px solid var(--border)", fontSize:"0.85rem", fontWeight:500 }}>
-            <span style={{ color:"var(--accent-dark)", fontWeight:700 }}>{icon}</span><span>{text}</span>
+            <Icon name={icon} size={17} style={{ color:"var(--accent-dark)" }} /><span>{text}</span>
           </div>
         ))}
       </div>
@@ -65,7 +66,7 @@ export default function HomePage() {
               <div className="card" style={{ overflow:"hidden", textAlign:"center" }}>
                 <div style={{ aspectRatio:"1/1", background:"var(--surface-2)", position:"relative", overflow:"hidden" }}>
                   {catImages[c.slug] && (
-                    <Image src={catImages[c.slug]} alt={c.name} fill style={{ objectFit:"cover" }} sizes="180px" />
+                    <SmartImage src={catImages[c.slug]} alt={c.name} fill style={{ objectFit:"cover" }} sizes="180px" />
                   )}
                 </div>
                 <div style={{ padding:"0.7rem 0.5rem", fontWeight:500, fontSize:"0.9rem", letterSpacing:"0.02em" }}>{c.name}</div>

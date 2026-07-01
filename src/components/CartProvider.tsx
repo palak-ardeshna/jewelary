@@ -1,5 +1,6 @@
 "use client";
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
+import { Icon } from "@/components/Icon";
 
 export interface CartItem {
   id: string; slug: string; name: string;
@@ -86,7 +87,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
           zIndex:9999, fontSize:"0.9rem", fontWeight:500, whiteSpace:"nowrap",
           display:"flex", alignItems:"center", gap:"0.5rem"
         }}>
-          <span>🛒</span> {toast}
+          <Icon name="bag" size={16} /> {toast}
         </div>
       )}
     </Ctx.Provider>
