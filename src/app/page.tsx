@@ -15,7 +15,7 @@ export default function HomePage() {
     "necklaces":   "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&q=80&fit=crop&auto=format",
     "earrings":    "https://images.unsplash.com/photo-1635767798638-3e25273a8236?w=500&q=80&fit=crop&auto=format",
     "bracelets":   "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=500&q=80&fit=crop&auto=format",
-    "bangles":     "https://images.unsplash.com/photo-1620656798932-902cef2b4f8b?w=500&q=80&fit=crop&auto=format",
+    "bangles":     "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=500&q=80&fit=crop&auto=format",
     "pendants":    "https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=500&q=80&fit=crop&auto=format",
     "mangalsutra": "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=500&q=80&fit=crop&auto=format",
     "gifts":       "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=500&q=80&fit=crop&auto=format",
@@ -24,7 +24,7 @@ export default function HomePage() {
   return (
     <div className="animate-fade-up">
       {/* ── Hero ── */}
-      <section style={{
+      <section className="hero-section" style={{
         background:"linear-gradient(135deg,#1c1917 0%,#2a2420 55%,#3d342a 100%)",
         borderRadius:"var(--radius-lg)", padding:"5rem 2rem", marginBottom:"3.5rem",
         color:"#faf8f5", position:"relative", overflow:"hidden",

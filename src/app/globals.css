@@ -216,3 +216,60 @@ body {
   animation: shimmer 1.5s infinite;
   border-radius: var(--radius);
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE — mobile / tablet / desktop
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Never allow horizontal scroll from a stray wide element. `clip` (not hidden)
+   keeps position:sticky working because it doesn't create a scroll container. */
+html, body { max-width: 100%; overflow-x: clip; }
+img, svg, video, iframe { max-width: 100%; }
+
+/* ── Header layout ── */
+.hdr-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 1rem;
+  height: 68px; display: flex; align-items: center; gap: 1.25rem;
+}
+.hdr-logo  { order: 1; }
+.hdr-search{ order: 2; flex: 1; max-width: 440px; }
+.hdr-nav   { order: 3; display: flex; align-items: center; gap: 1.25rem; margin-left: auto; }
+.hdr-cart  { order: 4; flex-shrink: 0; }
+
+/* Tablet: tighten the nav gaps so everything still fits on one row. */
+@media (max-width: 1024px) {
+  .hdr-inner { gap: 1rem; }
+  .hdr-nav   { gap: 0.9rem; }
+  .hdr-search{ max-width: 320px; }
+}
+
+/* Mobile: logo + cart on the top row, full-width search, scrollable nav. */
+@media (max-width: 768px) {
+  .hdr-inner {
+    flex-wrap: wrap; height: auto;
+    padding-top: 0.6rem; padding-bottom: 0.6rem;
+    row-gap: 0.65rem; column-gap: 0.75rem;
+  }
+  .hdr-logo      { order: 1; }
+  .hdr-logo-name { font-size: 1.45rem; }
+  .hdr-cart      { order: 2; margin-left: auto; }
+  .hdr-search    { order: 3; flex-basis: 100%; max-width: none; }
+  .hdr-nav {
+    order: 4; flex-basis: 100%; margin-left: 0;
+    overflow-x: auto; flex-wrap: nowrap; gap: 1.1rem;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .hdr-nav::-webkit-scrollbar { display: none; }
+}
+
+/* ── Comfortable tap targets on touch/small screens (WCAG 2.2) ── */
+@media (max-width: 768px) {
+  .btn-primary, .btn-accent, .btn-outline { min-height: 44px; }
+  .input { min-height: 44px; }
+}
+
+/* ── Fluid section rhythm — trim big vertical padding on phones ── */
+@media (max-width: 640px) {
+  .hero-section { padding: 3rem 1.25rem !important; margin-bottom: 2.25rem !important; }
+  h1.font-display { font-size: clamp(2rem, 8vw, 2.75rem) !important; }
+}

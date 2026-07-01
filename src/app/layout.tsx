@@ -49,10 +49,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             background:"rgba(255,255,255,0.95)", backdropFilter:"blur(10px)",
             borderBottom:"1px solid var(--border)", boxShadow:"var(--shadow-sm)",
           }}>
-            <div style={{ maxWidth:1200, margin:"0 auto", padding:"0 1rem", height:68, display:"flex", alignItems:"center", gap:"1.5rem" }}>
+            <div className="hdr-inner">
               {/* Logo */}
-              <Link href="/" style={{ textDecoration:"none", flexShrink:0, display:"flex", flexDirection:"column", lineHeight:1 }}>
-                <span className="font-display" style={{ fontWeight:600, fontSize:"1.7rem", color:"var(--primary)", letterSpacing:"0.02em" }}>
+              <Link href="/" className="hdr-logo" style={{ textDecoration:"none", flexShrink:0, display:"flex", flexDirection:"column", lineHeight:1 }}>
+                <span className="font-display hdr-logo-name" style={{ fontWeight:600, fontSize:"1.7rem", color:"var(--primary)", letterSpacing:"0.02em" }}>
                   Aurelia
                 </span>
                 <span style={{ fontSize:"0.6rem", letterSpacing:"0.35em", textTransform:"uppercase", color:"var(--fg-muted)", marginTop:"0.1rem" }}>
@@ -60,8 +60,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </span>
               </Link>
 
+              {/* Cart — stays top-right on every screen */}
+              <div className="hdr-cart"><CartButton /></div>
+
               {/* Search bar */}
-              <form action="/search" method="GET" style={{ flex:1, maxWidth:440 }}>
+              <form action="/search" method="GET" className="hdr-search">
                 <div style={{ position:"relative" }}>
                   <input
                     name="q"
@@ -76,12 +79,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </div>
               </form>
 
-              {/* Nav + Cart */}
-              <nav style={{ display:"flex", alignItems:"center", gap:"1.25rem", marginLeft:"auto" }}>
+              {/* Primary nav — horizontally scrollable on mobile */}
+              <nav className="hdr-nav">
                 {NAV_LINKS.map(([label, href]) => (
-                  <Link key={label} href={href} style={{ fontSize:"0.82rem", fontWeight:500, color:"var(--fg)", textDecoration:"none", letterSpacing:"0.02em" }}>{label}</Link>
+                  <Link key={label} href={href} style={{ fontSize:"0.82rem", fontWeight:500, color:"var(--fg)", textDecoration:"none", letterSpacing:"0.02em", whiteSpace:"nowrap", padding:"0.4rem 0" }}>{label}</Link>
                 ))}
-                <CartButton />
               </nav>
             </div>
           </header>

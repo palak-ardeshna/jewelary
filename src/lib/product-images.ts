@@ -28,7 +28,7 @@ const KEYWORD_MAP: Array<[string[], string]> = [
 
   // ── Bracelets / Bangles ─────────────────────────────────────────────────────
   [["tennis bracelet"],                             "photo-1611591437281-460bfbe1220a"], // diamond bracelet
-  [["bangle", "kada"],                              "photo-1620656798932-902cef2b4f8b"], // gold bangles
+  [["bangle", "kada"],                              "photo-1611591437281-460bfbe1220a"], // gold bangles/bracelet
   [["bracelet", "chain bracelet"],                  "photo-1611591437281-460bfbe1220a"], // bracelet
 
   // ── Gemstone / Gifts ─────────────────────────────────────────────────────────
