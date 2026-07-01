@@ -12,6 +12,8 @@
 // ============================================================================
 
 import { getProductImageUrl } from "@/lib/product-images";
+// Local product photography (static import → optimised path, works on static export).
+import mangalsutraImg from "@/assets/jewelary-img/Media.jpg";
 
 export interface Brand { id: string; slug: string; name: string; }
 export interface Category { id: string; slug: string; name: string; description?: string; parentId?: string; }
@@ -234,6 +236,7 @@ const _products: Product[] = [
   {
     id: "p_mangalsutra", slug: "saubhagya-diamond-mangalsutra", name: "Saubhagya Diamond Mangalsutra",
     description: "A contemporary mangalsutra with a diamond-set pendant in 18K gold on a traditional black-bead chain. Sacred symbolism, everyday elegance.",
+    imageUrl: mangalsutraImg.src,
     priceInPaise: 8500000, mrpInPaise: 9300000, currency: "INR", inStock: true, color: "Yellow Gold",
     categoryId: "c_mangalsutra", brandId: "b_bridal", collectionLine: "Bridal Heritage", gender: "Women",
     metal: "18K Yellow Gold", purity: "18K", grossWeightG: 7.4,
