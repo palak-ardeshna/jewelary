@@ -4,9 +4,12 @@ Guidance for Claude Code (and other agents) working in this repo.
 
 ## Project
 
-**Trendora** — a Next.js 15 (App Router, React 19) e-commerce SEO storefront.
-Buyer-intent SEO with *safe programmatic collections* and automated schema.org
-JSON-LD. **No database** — all data is a static in-memory store.
+**Aurelia** — a Next.js 15 (App Router, React 19) fine-jewellery e-commerce SEO
+storefront (npm package name still `trendora`). Buyer-intent SEO with *safe
+programmatic collections* and automated schema.org JSON-LD, plus a config-driven
+customer-engagement layer. **No runtime database** — all data is a static
+in-memory store ([`src/data/store.ts`](src/data/store.ts)) that mirrors the
+canonical Prisma model 1:1; the export ships as fully static files.
 
 ## Commands
 
@@ -24,12 +27,24 @@ routes below, or `npm run build` to confirm the static export succeeds.
 
 - **Static, DB-free data layer** — [`src/data/store.ts`](src/data/store.ts) holds
   all products/categories/collections and exposes DB-like query helpers. To move
-  to a real DB later, swap this one file; routes stay unchanged.
+  to a real DB later, swap this one file for Prisma calls; routes stay unchanged.
+  The canonical schema lives in [`prisma/schema.prisma`](prisma/schema.prisma)
+  (not run at runtime on the static host). Conventions from it: money is integer
+  *paise*, weights are integer *milligrams* — never floats.
 - **Routing** (`src/app/`, App Router):
   - `/` home · `/[category]` · `/[category]/[sub]` · `/products/[slug]` ·
-    `/c/[slug]` programmatic collections · plus `cart`, `checkout`, `wishlist`,
-    `account`, `search`.
+    `/c/[slug]` programmatic collections · plus `cart`, `checkout`,
+    `checkout/success`, `wishlist`, `account`, `account/orders`, `search`.
+  - `/admin` — client-side config dashboard for the engagement system. The gate
+    is `sessionStorage` + `NEXT_PUBLIC_ADMIN_*` creds: a convenience gate, **not
+    real security** (static export has no server).
   - `robots.ts` and `sitemap.ts` are generated.
+- **Engagement system** — config-driven conversion layer under
+  [`src/lib/engagement/`](src/lib/engagement) (config, targeting, A/B, analytics)
+  and [`src/components/engagement/`](src/components/engagement) (popups, social-
+  proof toasts, sticky add-to-cart, free-shipping bar, upsells, product rails).
+  Nothing is hardcoded in components — every unit is a row in one settings object
+  evaluated client-side at runtime. See [`docs/engagement.md`](docs/engagement.md).
 - **Indexability guard** — [`src/lib/collections.ts`](src/lib/collections.ts).
   Collections are always *generated* but only *indexed* when they clear a quality
   bar (`MIN_PRODUCTS_FOR_INDEX`, `MIN_INTRO_CHARS`). Failing pages emit
@@ -56,6 +71,8 @@ writes a fully static site to `./out/` for upload to shared hosting
   across the app).
 - Match existing component style; keep SEO/schema behavior intact when editing
   pages.
+- Deeper docs live in [`docs/`](docs/): `ARCHITECTURE.md`, `DESIGN_SYSTEM.md`,
+  `engagement.md`, `ROADMAP.md`.
 
 ## Do / Don't
 
