@@ -10,6 +10,10 @@ import { ProductCard } from "@/components/ProductCard";
 import { AddToCartButton } from "@/components/AddToCartButton";
 import { WishlistButton } from "@/components/WishlistButton";
 import { breadcrumbSchema, productSchema, type BreadcrumbItem } from "@/lib/schema-org";
+import { LowStock } from "@/components/engagement/LowStock";
+import { StickyAddToCart } from "@/components/engagement/StickyAddToCart";
+import { ProductViewTracker, RecentlyViewed } from "@/components/engagement/RecentlyViewed";
+import { resolveCrossSell } from "@/lib/engagement/crosssell";
 
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
@@ -60,6 +64,7 @@ export default async function ProductPage({ params }: { params: Params }) {
 
   const related = getRelatedProducts(product.id, product.categoryId, 4);
   const discount = product.mrpInPaise ? Math.round((1 - product.priceInPaise / product.mrpInPaise) * 100) : 0;
+  const crossSell = resolveCrossSell(product.slug);
 
   const crumbs: BreadcrumbItem[] = [
     { name: "Home", path: "/" },
@@ -117,11 +122,12 @@ export default async function ProductPage({ params }: { params: Params }) {
           </div>
 
           {/* Stock */}
-          <div>
+          <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", flexWrap:"wrap" }}>
             {product.inStock
               ? <span className="badge badge-green" style={{ gap:"0.3rem" }}><Icon name="check" size={12} /> In Stock — Ready to ship</span>
               : <span className="badge badge-red" style={{ gap:"0.3rem" }}><Icon name="x" size={12} /> Out of Stock</span>
             }
+            {product.inStock && <LowStock stockUnits={product.stockUnits} />}
           </div>
 
           {/* Description */}
@@ -152,7 +158,7 @@ export default async function ProductPage({ params }: { params: Params }) {
           )}
 
           {/* Add to Cart with size selector */}
-          <div style={{ display:"flex", flexDirection:"column", gap:"1.5rem" }}>
+          <div id="buybox" style={{ display:"flex", flexDirection:"column", gap:"1.5rem" }}>
             <AddToCartButton product={{ id:product.id, slug:product.slug, name:product.name, priceInPaise:product.priceInPaise, currency:product.currency, imageUrl:product.imageUrl, inStock:product.inStock, sizes:product.sizes }} />
             <div style={{ display: "flex", justifyContent: "center", borderTop:"1px solid var(--border)", paddingTop:"1.5rem" }}>
               <WishlistButton productId={product.slug} variant="pdp" />
@@ -182,6 +188,16 @@ export default async function ProductPage({ params }: { params: Params }) {
         </section>
       )}
 
+      {/* Complete the look — config-driven cross-sell */}
+      {crossSell && (
+        <section style={{ marginTop:"3rem" }}>
+          <h2 className="font-display" style={{ fontSize:"1.8rem", marginBottom:"1.25rem" }}>{crossSell.heading}</h2>
+          <div className="product-grid">
+            {crossSell.items.map((p) => <ProductCard key={p.id} product={p} />)}
+          </div>
+        </section>
+      )}
+
       {/* Related products */}
       {related.length > 0 && (
         <section style={{ marginTop:"3rem" }}>
@@ -191,6 +207,18 @@ export default async function ProductPage({ params }: { params: Params }) {
           </div>
         </section>
       )}
+
+      {/* Recently viewed — client rail from localStorage */}
+      <RecentlyViewed excludeSlug={product.slug} />
+
+      {/* Record this view + sticky add-to-cart */}
+      <ProductViewTracker slug={product.slug} />
+      <StickyAddToCart
+        id={product.id} slug={product.slug} name={product.name}
+        priceInPaise={product.priceInPaise} mrpInPaise={product.mrpInPaise}
+        currency={product.currency} imageUrl={product.imageUrl}
+        inStock={product.inStock} hasSizes={!!product.sizes?.length}
+      />
 
       <style>{`
         @media (min-width: 768px) {

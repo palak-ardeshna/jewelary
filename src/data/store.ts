@@ -34,7 +34,7 @@ export interface Certification { body: string; number?: string; }
 export interface Product {
   id: string; slug: string; name: string; description: string;
   priceInPaise: number; mrpInPaise?: number; currency: string;
-  inStock: boolean; color?: string; imageUrl?: string;
+  inStock: boolean; stockUnits?: number; color?: string; imageUrl?: string;
   categoryId: string; brandId?: string;
   rating?: number; reviewCount?: number; sizes?: string[];
   // ── Jewellery attributes (all optional; mirror the Prisma Product model) ──
@@ -84,7 +84,7 @@ const _products: Product[] = [
   {
     id: "p_halo_ring", slug: "celeste-halo-diamond-ring", name: "Celeste Halo Diamond Ring",
     description: "A brilliant centre stone encircled by a halo of pavé diamonds in 18K white gold. The halo amplifies the centre diamond's size and sparkle, while the split shank adds a modern edge.",
-    priceInPaise: 24900, mrpInPaise: 29900, currency: "INR", inStock: true, color: "White Gold",
+    priceInPaise: 24900, mrpInPaise: 29900, currency: "INR", inStock: true, stockUnits: 3, color: "White Gold",
     categoryId: "c_engagement", brandId: "b_bridal", collectionLine: "Halo", gender: "Women",
     metal: "18K White Gold", purity: "18K", grossWeightG: 3.8,
     gemstones: [{ type: "Diamond", caratWeight: 0.5, cut: "Round", clarity: "VS1", count: 1 }, { type: "Diamond", caratWeight: 0.3, cut: "Round", count: 18 }],
@@ -106,7 +106,7 @@ const _products: Product[] = [
   {
     id: "p_signet_ring", slug: "regal-gold-signet-ring", name: "Regal 22K Gold Signet Ring",
     description: "A substantial 22K gold signet ring with a hand-finished matte face, ready for engraving. A modern heirloom for him or her.",
-    priceInPaise: 19900, mrpInPaise: 24900, currency: "INR", inStock: true, color: "Yellow Gold",
+    priceInPaise: 19900, mrpInPaise: 24900, currency: "INR", inStock: true, stockUnits: 4, color: "Yellow Gold",
     categoryId: "c_rings", brandId: "b_signature", collectionLine: "Everyday Gold", gender: "Unisex",
     metal: "22K Yellow Gold", purity: "22K", grossWeightG: 9.4,
     certifications: [{ body: "BIS" }],

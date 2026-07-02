@@ -11,6 +11,10 @@ const nextConfig = {
   },
   // Emit /path/index.html so Apache/LiteSpeed serves clean URLs without rewrites.
   trailingSlash: true,
+  // Allow loading the dev server over the LAN IP (e.g. testing from another
+  // device) without the Next 15 cross-origin dev warning. Dev-only; ignored by
+  // the static export/production build.
+  allowedDevOrigins: ["192.168.1.21"],
 };
 
 export default nextConfig;

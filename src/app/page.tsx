@@ -3,6 +3,7 @@ import { getTopCategories, getCollections, getInStockProducts, reviews } from "@
 import { ProductCard } from "@/components/ProductCard";
 import { SmartImage } from "@/components/SmartImage";
 import { Icon } from "@/components/Icon";
+import { ProductRail } from "@/components/engagement/ProductRail";
 
 export default function HomePage() {
   const categories = getTopCategories();
@@ -134,6 +135,12 @@ export default function HomePage() {
           </div>
         </section>
       )}
+
+      {/* ── 5b. Engagement rails (config-driven, tag-based) ── */}
+      <div className="container">
+        <ProductRail id="best-sellers" />
+        <ProductRail id="trending" />
+      </div>
 
       {/* ── 6. Testimonials / Social Proof ── */}
       <section className="container" style={{ marginBottom:"var(--space-12)" }} data-reveal>

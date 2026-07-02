@@ -3,6 +3,8 @@ import { useCart } from "./CartProvider";
 import { SmartImage } from "@/components/SmartImage";
 import { Icon } from "@/components/Icon";
 import Link from "next/link";
+import { FreeShippingBar } from "@/components/engagement/FreeShippingBar";
+import { GiftWrapUpsell } from "@/components/engagement/GiftWrapUpsell";
 
 function formatPrice(p: number) {
   return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(p / 100);
@@ -31,6 +33,7 @@ export function CartDrawer() {
 
         {/* Items */}
         <div style={{ flex:1, overflowY:"auto", padding:"1rem 1.5rem" }}>
+          {items.length > 0 && <FreeShippingBar />}
           {items.length === 0 ? (
             <div style={{ textAlign:"center", padding:"3rem 1rem", color:"var(--fg-muted)" }}>
               <div style={{ marginBottom:"1rem", color:"var(--fg-subtle)" }}><Icon name="bag" size={44} strokeWidth={1.25} /></div>
@@ -62,6 +65,7 @@ export function CartDrawer() {
               ))}
             </ul>
           )}
+          {items.length > 0 && <div style={{ marginTop: "1rem" }}><GiftWrapUpsell /></div>}
         </div>
 
         {/* Footer */}
