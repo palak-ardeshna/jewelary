@@ -7,6 +7,7 @@ export interface ProductCardData {
   slug: string; name: string; priceInPaise: number; mrpInPaise?: number;
   currency: string; color?: string | null; imageUrl?: string | null;
   rating?: number | null; reviewCount?: number | null; inStock?: boolean;
+  tags?: string[];
 }
 
 function StarRating({ rating }: { rating: number }) {
