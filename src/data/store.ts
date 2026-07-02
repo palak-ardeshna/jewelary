@@ -45,6 +45,7 @@ export interface Product {
   certifications?: Certification[];
   collectionLine?: string;   // "Solitaire", "Everyday Gold", "Bridal Heritage"
   gender?: string;           // "Women" | "Men" | "Unisex"
+  tags?: string[];           // "Best Seller", "Limited Stock", "New Arrival"
 }
 
 export interface CollectionFilter { categorySlug?: string; brandSlug?: string; color?: string; maxPriceInPaise?: number; }
@@ -78,6 +79,7 @@ const _products: Product[] = [
     gemstones: [{ type: "Diamond", caratWeight: 0.75, cut: "Round", clarity: "VVS2", count: 1 }],
     certifications: [{ body: "IGI", number: "IGI-2026-AUR-0075" }, { body: "BIS" }],
     rating: 4.9, reviewCount: 86, sizes: ["10","11","12","13","14","15","16"],
+    tags: ["Best Seller"],
   },
   {
     id: "p_halo_ring", slug: "celeste-halo-diamond-ring", name: "Celeste Halo Diamond Ring",
@@ -88,6 +90,7 @@ const _products: Product[] = [
     gemstones: [{ type: "Diamond", caratWeight: 0.5, cut: "Round", clarity: "VS1", count: 1 }, { type: "Diamond", caratWeight: 0.3, cut: "Round", count: 18 }],
     certifications: [{ body: "IGI", number: "IGI-2026-AUR-0050" }, { body: "BIS" }],
     rating: 4.8, reviewCount: 64, sizes: ["10","11","12","13","14","15","16"],
+    tags: ["Limited Stock", "Trending"],
   },
   // ── Rings ─────────────────────────────────────────────────────────────────
   {
@@ -108,6 +111,7 @@ const _products: Product[] = [
     metal: "22K Yellow Gold", purity: "22K", grossWeightG: 9.4,
     certifications: [{ body: "BIS" }],
     rating: 4.6, reviewCount: 73, sizes: ["12","13","14","15","16","17","18"],
+    tags: ["New Arrival"],
   },
   {
     id: "p_emerald_ring", slug: "verde-emerald-cocktail-ring", name: "Verde Emerald Cocktail Ring",

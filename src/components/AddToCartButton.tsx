@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useCart } from "./CartProvider";
 import { Icon } from "@/components/Icon";
+import { SizeGuide } from "@/components/SizeGuide";
 
 interface Props {
   product: {
@@ -45,27 +46,23 @@ export function AddToCartButton({ product }: Props) {
         <div>
           <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"0.5rem" }}>
             <span style={{ fontWeight:600, fontSize:"0.9rem" }}>Select Size</span>
-            <span style={{ fontSize:"0.8rem", color:"var(--primary)", cursor:"pointer", textDecoration:"underline" }}>Size Guide</span>
+            <SizeGuide />
           </div>
           <div style={{ display:"flex", flexWrap:"wrap", gap:"0.5rem" }}>
             {product.sizes!.map((s) => (
               <button
                 key={s}
+                type="button"
+                aria-pressed={selectedSize === s}
                 onClick={() => { setSelectedSize(s); setSizeError(false); }}
-                style={{
-                  padding:"0.4rem 0.9rem", borderRadius:"var(--radius-sm)", fontWeight:600, fontSize:"0.875rem",
-                  border: selectedSize === s ? "2px solid var(--primary)" : "1.5px solid var(--border)",
-                  background: selectedSize === s ? "#eef2ff" : "#fff",
-                  color: selectedSize === s ? "var(--primary)" : "var(--fg)",
-                  cursor:"pointer", transition:"all 0.15s",
-                }}
+                className="size-chip"
               >{s}</button>
             ))}
           </div>
           {sizeError && <p style={{ color:"var(--error)", fontSize:"0.8rem", marginTop:"0.4rem", display:"flex", alignItems:"center", gap:"0.35rem" }}><Icon name="alert" size={13} /> Please select a size</p>}
         </div>
       )}
-      <button onClick={handleAdd} className="btn-accent" style={{ width:"100%", fontSize:"1rem", padding:"0.875rem" }}>
+      <button onClick={handleAdd} className="btn-accent btn-lg btn-block">
         <Icon name="bag" size={17} /> Add to Cart
       </button>
     </div>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { formatPrice } from "@/lib/site";
 import { SmartImage } from "@/components/SmartImage";
+import { WishlistButton } from "@/components/WishlistButton";
 
 export interface ProductCardData {
   slug: string; name: string; priceInPaise: number; mrpInPaise?: number;
@@ -41,15 +42,21 @@ export function ProductCard({ product }: { product: ProductCardData }) {
           ) : (
             <div style={{ display:"flex", alignItems:"center", justifyContent:"center", height:"100%", color:"var(--fg-subtle)", fontSize:"0.8rem" }}>No image</div>
           )}
+          <WishlistButton productId={product.slug} variant="card" />
           {/* Badges */}
-          {discount >= 10 && (
-            <span className="badge badge-red" style={{ position:"absolute", top:"0.5rem", left:"0.5rem", fontSize:"0.65rem" }}>
-              {discount}% OFF
-            </span>
+          {product.mrpInPaise && product.priceInPaise < product.mrpInPaise && (
+             <span className="badge badge-neutral" style={{ position:"absolute", top:"1rem", left:"1rem" }}>Bestseller</span>
           )}
           {product.inStock === false && (
             <div style={{ position:"absolute", inset:0, background:"rgb(0 0 0 / 0.4)", display:"flex", alignItems:"center", justifyContent:"center" }}>
               <span style={{ background:"#fff", color:"var(--fg)", padding:"0.25rem 0.75rem", borderRadius:99, fontSize:"0.75rem", fontWeight:700 }}>Out of stock</span>
+            </div>
+          )}
+          {product.tags && product.tags.length > 0 && product.inStock !== false && (
+            <div style={{ position:"absolute", top:"0.5rem", left:"0.5rem", display:"flex", flexDirection:"column", gap:"0.25rem" }}>
+              {product.tags.map(tag => (
+                <span key={tag} className={`badge ${tag === 'Best Seller' ? 'badge-gold' : tag === 'Limited Stock' ? 'badge-dark' : 'badge-neutral'}`} style={{ padding: "0.2rem 0.5rem", fontSize: "0.6rem" }}>{tag}</span>
+              ))}
             </div>
           )}
         </div>
@@ -61,8 +68,8 @@ export function ProductCard({ product }: { product: ProductCardData }) {
           </p>
           {product.color && <p style={{ fontSize:"0.75rem", color:"var(--fg-muted)", marginBottom:"0.25rem" }}>{product.color}</p>}
           {product.rating && <div style={{ marginBottom:"0.4rem" }}><StarRating rating={product.rating} /></div>}
-          <div style={{ display:"flex", alignItems:"baseline", gap:"0.3rem", flexWrap:"wrap" }}>
-            <span style={{ fontWeight:700, fontSize:"1rem", color:"var(--fg)" }}>{formatPrice(product.priceInPaise, product.currency)}</span>
+          <div style={{ display:"flex", alignItems:"baseline", gap:"0.5rem", flexWrap:"wrap" }}>
+            <span className="price-current">{formatPrice(product.priceInPaise, product.currency)}</span>
             {product.mrpInPaise && product.mrpInPaise > product.priceInPaise && (
               <span className="price-mrp">{formatPrice(product.mrpInPaise, product.currency)}</span>
             )}

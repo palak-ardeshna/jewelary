@@ -7,15 +7,15 @@ export const SITE_URL = (
 export const SITE_NAME = "Aurelia";
 export const SITE_TAGLINE = "Fine Jewellery";
 export const SITE_DESCRIPTION =
-  "Aurelia — certified fine jewellery. BIS-hallmarked gold, platinum and IGI/GIA-certified diamonds. Rings, necklaces, earrings, bangles and bridal jewellery with a transparent price breakup, lifetime exchange and 30-day returns.";
+  "Aurelia — design-led fine jewellery. 18K solid gold, platinum, and brilliant hand-set stones. Made to be worn. Built to last. Meant to be inherited.";
 
 // Announcement bar content — a single source (Setting/CMS row in the full-stack
 // build). Deliberately service- & trust-led, never discount countdowns.
 export const ANNOUNCEMENTS: string[] = [
   "Complimentary insured shipping across India",
-  "Every piece BIS-hallmarked · IGI / GIA-certified diamonds",
-  "Transparent price breakup · Lifetime exchange",
-  "Cash on Delivery available · 30-day returns",
+  "18k solid gold & platinum · hand-set brilliant stones",
+  "Transparent pricing · Lifetime exchange",
+  "Cash on Delivery available · 30-day easy returns",
 ];
 
 export function absUrl(path: string): string {

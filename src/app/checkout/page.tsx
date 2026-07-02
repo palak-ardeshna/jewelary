@@ -22,6 +22,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [orderPlaced, setOrderPlaced] = useState(false);
   const [form, setForm] = useState({ name:"", email:"", phone:"", address:"", city:"", state:"Delhi", pin:"" });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -63,14 +64,29 @@ export default function CheckoutPage() {
     const errs = { ...validateStep(1), ...validateStep(2) };
     if (Object.keys(errs).length) { setErrors(errs); setStep(errs.name || errs.email || errs.phone ? 1 : 2); return; }
     setLoading(true);
+    setOrderPlaced(true);
     await new Promise(r => setTimeout(r, 1600));
+    
+    const newOrder = {
+      id: `AUR${Math.floor(100000 + Math.random() * 900000)}`,
+      date: new Date().toISOString(),
+      items: items,
+      total: grandTotal,
+      status: "Processing"
+    };
+    
+    const saved = localStorage.getItem("aurelia_orders");
+    const list = saved ? JSON.parse(saved) : [];
+    list.unshift(newOrder);
+    localStorage.setItem("aurelia_orders", JSON.stringify(list));
+    
     clearCart();
-    router.push("/checkout/success");
+    router.push(`/checkout/success?id=${newOrder.id}`);
   }
 
   useEffect(() => {
-    if (items.length === 0) router.push("/cart");
-  }, [items.length, router]);
+    if (items.length === 0 && !orderPlaced) router.push("/cart");
+  }, [items.length, router, orderPlaced]);
 
   if (items.length === 0) return null;
 
@@ -87,7 +103,7 @@ export default function CheckoutPage() {
     </div>
   );
 
-  const cardStyle: React.CSSProperties = { padding:"clamp(1.15rem, 4vw, 1.75rem)", background:"var(--surface)", borderRadius:"var(--radius-lg)", border:"1px solid var(--border)" };
+  const cardStyle: React.CSSProperties = { padding:"clamp(1.15rem, 4vw, 1.75rem)", background:"var(--surface)", border:"1px solid var(--border)" };
   const rowStyle: React.CSSProperties = { display:"flex", justifyContent:"space-between", gap:"1rem", fontSize:"0.875rem" };
 
   return (
@@ -138,7 +154,7 @@ export default function CheckoutPage() {
           {/* Step 1 — Contact */}
           {step === 1 && (
             <div style={cardStyle} className="animate-fade-up">
-              <h2 style={{ fontSize:"1.1rem", fontWeight:700, marginBottom:"1.25rem" }}>Contact Information</h2>
+              <h2 className="t-h2" style={{ fontSize:"1.25rem", fontWeight:400, marginBottom:"1.25rem" }}>Contact Information</h2>
               <div style={{ display:"grid", gap:"1rem", gridTemplateColumns:"1fr 1fr" }} className="field-grid">
                 {field("Full Name","name","text","Riya Sharma")}
                 {field("Email","email","email","riya@example.com")}
@@ -150,7 +166,7 @@ export default function CheckoutPage() {
           {/* Step 2 — Shipping */}
           {step === 2 && (
             <div style={cardStyle} className="animate-fade-up">
-              <h2 style={{ fontSize:"1.1rem", fontWeight:700, marginBottom:"1.25rem" }}>Shipping Address</h2>
+              <h2 className="t-h2" style={{ fontSize:"1.25rem", fontWeight:400, marginBottom:"1.25rem" }}>Shipping Address</h2>
               <div style={{ display:"flex", flexDirection:"column", gap:"1rem" }}>
                 {field("House / Flat / Street","address","text","123, Lajpat Nagar")}
                 <div style={{ display:"grid", gap:"1rem", gridTemplateColumns:"1fr 1fr" }} className="field-grid">
@@ -170,8 +186,8 @@ export default function CheckoutPage() {
           {/* Step 3 — Payment (Cash on Delivery only) */}
           {step === 3 && (
             <div style={cardStyle} className="animate-fade-up">
-              <h2 style={{ fontSize:"1.1rem", fontWeight:700, marginBottom:"1.25rem" }}>Payment Method</h2>
-              <label style={{ display:"flex", alignItems:"center", gap:"0.9rem", padding:"1.1rem 1.15rem", borderRadius:"var(--radius)", border:"2px solid var(--accent)", background:"var(--surface-2)", cursor:"default", fontWeight:600 }}>
+              <h2 className="t-h2" style={{ fontSize:"1.25rem", fontWeight:400, marginBottom:"1.25rem" }}>Payment Method</h2>
+              <label style={{ display:"flex", alignItems:"center", gap:"0.9rem", padding:"1.1rem 1.15rem", border:"1px solid var(--accent-dark)", background:"var(--surface-2)", cursor:"default", fontWeight:600 }}>
                 <input type="radio" name="payment" checked readOnly style={{ accentColor:"var(--accent)" }} />
                 <Icon name="wallet" size={22} style={{ color:"var(--accent-dark)" }} />
                 <span>
@@ -181,7 +197,7 @@ export default function CheckoutPage() {
                   </span>
                 </span>
               </label>
-              <div style={{ marginTop:"1rem", padding:"0.9rem 1rem", background:"var(--bg)", border:"1px dashed var(--border-strong)", borderRadius:"var(--radius)", fontSize:"0.82rem", color:"var(--fg-muted)", lineHeight:1.6, display:"flex", gap:"0.5rem", alignItems:"flex-start" }}>
+              <div style={{ marginTop:"1rem", padding:"0.9rem 1rem", background:"var(--bg)", border:"1px solid var(--border)", fontSize:"0.82rem", color:"var(--fg-muted)", lineHeight:1.6, display:"flex", gap:"0.5rem", alignItems:"flex-start" }}>
                 <Icon name="lock" size={15} style={{ marginTop:"0.15rem" }} /><span>Every order ships fully insured and tamper-proof. Please keep the exact amount ready — our delivery partner accepts cash only.</span>
               </div>
             </div>
@@ -234,7 +250,7 @@ export default function CheckoutPage() {
 
         {/* Right: order summary (always visible) */}
         <div style={{ ...cardStyle, height:"fit-content" }} className="checkout-summary">
-          <h2 style={{ fontSize:"1rem", fontWeight:700, marginBottom:"1rem" }}>Order Summary</h2>
+          <h2 className="t-h2" style={{ fontSize:"1.25rem", fontWeight:400, marginBottom:"1.25rem" }}>Order Summary</h2>
           <ul style={{ listStyle:"none", padding:0, margin:0, display:"flex", flexDirection:"column", gap:"0.5rem", marginBottom:"1rem" }}>
             {items.map(item=>(
               <li key={`${item.id}-${item.size}`} style={rowStyle}>

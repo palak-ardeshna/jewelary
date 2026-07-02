@@ -1,28 +1,38 @@
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
+import { FireworksConfetti } from "@/components/Confetti";
 
 export const metadata = { title: "Order Confirmed", robots: { index: false } };
 
 export default function OrderSuccessPage() {
   const orderId = `AUR${Math.floor(100000 + Math.random() * 900000)}`;
   return (
-    <div className="animate-fade-up" style={{ textAlign:"center", padding:"4rem 1rem", maxWidth:520, margin:"0 auto" }}>
-      <div style={{ marginBottom:"1.25rem", color:"var(--success)", display:"flex", justifyContent:"center" }}><Icon name="success" size={64} strokeWidth={1.5} /></div>
-      <h1 style={{ fontSize:"2rem", fontWeight:800, letterSpacing:"-0.03em", marginBottom:"0.5rem" }}>Order Confirmed</h1>
-      <p style={{ color:"var(--fg-muted)", fontSize:"1.1rem", marginBottom:"1.5rem" }}>
-        Thank you for shopping with Aurelia. Your order is being packed.
+    <div className="animate-fade-up" style={{ textAlign:"center", padding:"6rem 1.5rem", maxWidth:580, margin:"0 auto" }}>
+      <FireworksConfetti />
+      <div style={{ marginBottom:"1.5rem", color:"var(--primary)", display:"flex", justifyContent:"center" }}><Icon name="success" size={72} strokeWidth={1} /></div>
+      <h1 className="t-display" style={{ fontSize:"2.75rem", fontWeight:400, letterSpacing:"-0.02em", marginBottom:"1rem" }}>Order Confirmed</h1>
+      <p style={{ color:"var(--fg-muted)", fontSize:"1.1rem", marginBottom:"2rem", lineHeight:1.6 }}>
+        Thank you for choosing Aurelia. Your exquisite piece is being prepared with the utmost care.
       </p>
-      <div style={{ padding:"1.25rem 1.5rem", background:"var(--surface)", borderRadius:"var(--radius-lg)", border:"1px solid var(--border)", marginBottom:"2rem" }}>
-        <p style={{ fontSize:"0.875rem", color:"var(--fg-muted)" }}>Order ID</p>
-        <p style={{ fontWeight:700, fontSize:"1.25rem", color:"var(--primary)", fontFamily:"monospace" }}>{orderId}</p>
-        <div style={{ fontSize:"0.875rem", color:"var(--fg-muted)", marginTop:"0.75rem", display:"flex", flexDirection:"column", gap:"0.4rem", alignItems:"center" }}>
-          <span style={{ display:"flex", alignItems:"center", gap:"0.45rem" }}><Icon name="mail" size={15} /> A confirmation has been sent to your email.</span>
-          <span style={{ display:"flex", alignItems:"center", gap:"0.45rem" }}><Icon name="truck" size={15} /> Expected delivery in 3–5 business days.</span>
+      
+      <div style={{ padding:"2rem", background:"var(--surface)", border:"1px solid var(--border)", marginBottom:"2.5rem" }}>
+        <p style={{ fontSize:"0.85rem", color:"var(--fg-muted)", textTransform:"uppercase", letterSpacing:"0.05em", marginBottom:"0.5rem" }}>Order ID</p>
+        <p style={{ fontWeight:400, fontSize:"1.5rem", color:"var(--primary)", letterSpacing:"0.1em", marginBottom:"1.5rem" }}>{orderId}</p>
+        
+        <div style={{ fontSize:"0.95rem", color:"var(--fg-muted)", display:"flex", flexDirection:"column", gap:"0.75rem", alignItems:"center", borderTop:"1px solid var(--border)", paddingTop:"1.5rem" }}>
+          <span style={{ display:"flex", alignItems:"center", gap:"0.6rem" }}>
+            <Icon name="mail" size={18} style={{ color:"var(--accent-dark)" }} /> 
+            <strong style={{ color:"var(--fg)", fontWeight:500 }}>Order confirmation updated in your mail.</strong>
+          </span>
+          <span style={{ display:"flex", alignItems:"center", gap:"0.6rem" }}>
+            <Icon name="truck" size={18} style={{ color:"var(--accent-dark)" }} /> 
+            Expected delivery in 3–5 business days.
+          </span>
         </div>
       </div>
+      
       <div style={{ display:"flex", gap:"1rem", justifyContent:"center", flexWrap:"wrap" }}>
-        <Link href="/" className="btn-primary" style={{ textDecoration:"none" }}>Continue Shopping</Link>
-        <Link href="/" className="btn-outline" style={{ textDecoration:"none" }}>Track Order</Link>
+        <Link href="/" className="btn-primary" style={{ textDecoration:"none", padding:"1rem 2rem", fontSize:"1rem" }}>Continue Shopping</Link>
       </div>
     </div>
   );

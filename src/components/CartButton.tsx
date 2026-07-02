@@ -11,7 +11,7 @@ export function CartButton() {
       style={{
         position:"relative", background:"none", border:"none", cursor:"pointer",
         padding:"0.5rem", borderRadius:"var(--radius-sm)", display:"flex",
-        alignItems:"center", gap:"0.25rem", color:"var(--fg)",
+        alignItems:"center", gap:"0.25rem", color:"inherit",
         transition:"color 0.15s",
       }}
     >

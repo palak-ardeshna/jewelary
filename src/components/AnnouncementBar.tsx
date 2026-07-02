@@ -45,7 +45,8 @@ export function AnnouncementBar() {
                 position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center",
                 fontSize: "0.72rem", letterSpacing: "0.14em", textTransform: "uppercase", fontWeight: 500,
                 opacity: idx === i ? 0.92 : 0,
-                transition: "opacity 800ms cubic-bezier(.22,1,.36,1)",
+                visibility: idx === i ? "visible" : "hidden",
+                transition: "opacity 800ms cubic-bezier(.22,1,.36,1), visibility 800ms",
                 pointerEvents: "none", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
               }}
             >
