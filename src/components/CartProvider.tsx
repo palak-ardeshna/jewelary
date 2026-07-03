@@ -84,10 +84,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
           position:"fixed", bottom:"1.5rem", left:"50%", transform:"translateX(-50%)",
           background:"#111827", color:"#fff", padding:"0.75rem 1.25rem",
           borderRadius:"var(--radius)", boxShadow:"var(--shadow-lg)",
-          zIndex:9999, fontSize:"0.9rem", fontWeight:500, whiteSpace:"nowrap",
+          zIndex:9999, fontSize:"0.9rem", fontWeight:500,
+          maxWidth:"calc(100vw - 2rem)", boxSizing:"border-box",
           display:"flex", alignItems:"center", gap:"0.5rem"
         }}>
-          <Icon name="bag" size={16} /> {toast}
+          <Icon name="bag" size={16} style={{ flexShrink:0 }} />
+          <span style={{ overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap", minWidth:0 }}>{toast}</span>
         </div>
       )}
     </Ctx.Provider>
