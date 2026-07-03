@@ -99,7 +99,7 @@ export default async function ProductPage({ params }: { params: Params }) {
                 <span key={tag} className={`badge ${tag === 'Best Seller' ? 'badge-gold' : tag === 'Limited Stock' ? 'badge-dark' : 'badge-neutral'}`} style={{ padding: "0.2rem 0.6rem", fontSize: "0.65rem", lineHeight: 1 }}>{tag}</span>
               ))}
             </div>
-            <h1 className="t-display" style={{ fontSize:"2.5rem", fontWeight:400, lineHeight:1.15 }}>{product.name}</h1>
+            <h1 className="t-display" style={{ fontSize:"clamp(1.9rem, 6vw, 2.5rem)", fontWeight:400, lineHeight:1.15 }}>{product.name}</h1>
           </div>
 
           {/* Certifications */}

@@ -87,7 +87,7 @@ export default async function HomePage() {
           <span className="eyebrow">Explore</span>
           <h2 className="t-h2">Shop by Category</h2>
         </div>
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(4, 1fr)", gap:"1.5rem" }}>
+        <div className="home-cat-grid" style={{ display:"grid", gridTemplateColumns:"repeat(4, 1fr)", gap:"1.5rem" }}>
           {categories.slice(0, 4).map((c) => (
             <Link key={c.id} href={`/${c.slug}`} style={{ textDecoration:"none", color:"inherit" }}>
               <div className="card" style={{ position:"relative", aspectRatio:"4/5", overflow:"hidden" }}>
@@ -152,7 +152,7 @@ export default async function HomePage() {
           <span className="eyebrow">Real Stories</span>
           <h2 className="t-h2">Loved by thousands</h2>
         </div>
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(3, 1fr)", gap:"2rem" }}>
+        <div className="home-testimonials" style={{ display:"grid", gridTemplateColumns:"repeat(3, 1fr)", gap:"2rem" }}>
           {homeReviews.map(r => (
             <div key={r.id} style={{ background:"var(--surface-2)", padding:"2.5rem 2rem", border:"1px solid var(--border)", textAlign:"center" }}>
               <div style={{ color:"var(--accent-dark)", fontSize:"1.2rem", marginBottom:"1rem", letterSpacing:"2px" }}>
@@ -174,8 +174,8 @@ export default async function HomePage() {
           <p style={{ color:"rgba(255,255,255,0.7)", marginBottom:"2rem", lineHeight:1.7 }}>
             Subscribe to our newsletter for early access to new collections, private sales, and insider styling tips. Plus, receive 10% off your first order.
           </p>
-          <form style={{ display:"flex", gap:"0.5rem" }}>
-            <input type="email" placeholder="Email Address" required style={{ flex:1, padding:"1rem 1.5rem", background:"rgba(255,255,255,0.1)", border:"1px solid rgba(255,255,255,0.2)", color:"#fff", outline:"none" }} />
+          <form className="home-newsletter-form" style={{ display:"flex", gap:"0.5rem" }}>
+            <input type="email" placeholder="Email Address" required style={{ flex:1, minWidth:0, padding:"1rem 1.5rem", background:"rgba(255,255,255,0.1)", border:"1px solid rgba(255,255,255,0.2)", color:"#fff", outline:"none", fontSize:"1rem" }} />
             <button type="button" className="btn-accent" style={{ background:"var(--accent)", color:"var(--primary)", borderColor:"var(--accent)" }}>Subscribe</button>
           </form>
         </div>
@@ -189,13 +189,29 @@ export default async function HomePage() {
         }
         @media (max-width: 1024px) {
           .product-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .home-cat-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 900px) {
+          .home-testimonials { grid-template-columns: repeat(2, 1fr) !important; }
         }
         @media (max-width: 768px) {
           .hero-section {
             margin-top: calc(-1.5rem - 64px) !important;
             padding-top: 64px !important;
+            height: 78vh !important;
+            min-height: 520px !important;
           }
           h1.t-display { font-size: clamp(2.8rem, 10vw, 4rem) !important; }
+          .home-testimonials { grid-template-columns: 1fr !important; }
+          .home-newsletter-form { flex-direction: column !important; }
+          .home-newsletter-form .btn-accent { width: 100%; }
+        }
+        /* Landscape phones: don't let the hero eat the whole screen. */
+        @media (max-height: 560px) and (max-width: 900px) {
+          .hero-section { height: auto !important; min-height: 440px !important; padding-top: 96px !important; padding-bottom: 3rem !important; }
+        }
+        @media (max-width: 560px) {
+          .home-cat-grid { gap: 1rem !important; }
         }
       `}</style>
     </div>

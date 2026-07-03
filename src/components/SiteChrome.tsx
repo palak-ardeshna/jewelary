@@ -76,38 +76,52 @@ export function SiteChrome({
             </div>
           </div>
 
-          {/* Middle Section: Links */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "3rem", padding: "4rem 0" }}>
-            <div>
+          {/* Middle Section: Links — collapsible accordions on phones, open columns on desktop */}
+          <div className="footer-links" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "3rem", padding: "4rem 0" }}>
+            <div className="footer-brand">
               <p className="font-display" style={{ fontWeight: 400, fontSize: "1.8rem", color: "var(--primary)", marginBottom: "1rem", letterSpacing: "0.02em" }}>Aurelia</p>
               <p style={{ fontSize: "0.9rem", color: "var(--fg-muted)", lineHeight: 1.6, maxWidth: 280 }}>Design-led fine jewellery. Made to be worn. Built to last. Meant to be inherited.</p>
             </div>
-            <div>
-              <p style={{ fontWeight: 600, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "1.25rem" }}>Shop</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                {[["Engagement", "/engagement-rings"], ["Rings", "/rings"], ["Necklaces", "/necklaces"], ["Earrings", "/earrings"], ["Bracelets", "/bracelets"]].map(([l, h]) => (
-                  <Link key={h} href={h} style={{ fontSize: "0.95rem", color: "var(--fg-muted)", textDecoration: "none", transition: "color 0.2s" }}>{l}</Link>
-                ))}
-              </div>
-            </div>
-            <div>
-              <p style={{ fontWeight: 600, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "1.25rem" }}>Collections</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                {[["Bridal Heritage", "/c/best-diamond-engagement-rings"], ["Everyday Gold", "/c/everyday-gold-under-200"], ["Solitaires", "/c/best-white-gold-diamond-jewellery"]].map(([l, h]) => (
-                  <Link key={h} href={h} style={{ fontSize: "0.95rem", color: "var(--fg-muted)", textDecoration: "none", transition: "color 0.2s" }}>{l}</Link>
-                ))}
-              </div>
-            </div>
-            <div>
-              <p style={{ fontWeight: 600, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "1.25rem" }}>Client Care</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                {[["My Account", "/account"], ["Track Order", "/account/orders"], ["Returns & Exchanges", "/"], ["Ring Size Guide", "/"], ["Contact Us", "/"]].map(([l, h]) => (
-                  <Link key={l} href={h} style={{ fontSize: "0.95rem", color: "var(--fg-muted)", textDecoration: "none", transition: "color 0.2s" }}>{l}</Link>
-                ))}
-              </div>
-            </div>
+            {([
+              ["Shop", [["Engagement", "/engagement-rings"], ["Rings", "/rings"], ["Necklaces", "/necklaces"], ["Earrings", "/earrings"], ["Bracelets", "/bracelets"]]],
+              ["Collections", [["Bridal Heritage", "/c/best-diamond-engagement-rings"], ["Everyday Gold", "/c/everyday-gold-under-200"], ["Solitaires", "/c/best-white-gold-diamond-jewellery"]]],
+              ["Client Care", [["My Account", "/account"], ["Track Order", "/account/orders"], ["Returns & Exchanges", "/"], ["Ring Size Guide", "/"], ["Contact Us", "/"]]],
+            ] as [string, [string, string][]][]).map(([heading, links]) => (
+              <details key={heading} className="footer-col">
+                <summary style={{ listStyle: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", fontWeight: 600, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "1.25rem" }}>
+                  {heading}
+                  <span className="footer-chevron" aria-hidden style={{ transition: "transform var(--dur-2) var(--ease-out)" }}>▾</span>
+                </summary>
+                <div className="footer-col-body" style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                  {links.map(([l, h]) => (
+                    <Link key={l} href={h} style={{ fontSize: "0.95rem", color: "var(--fg-muted)", textDecoration: "none", transition: "color 0.2s" }}>{l}</Link>
+                  ))}
+                </div>
+              </details>
+            ))}
           </div>
         </div>
+
+        <style>{`
+          .footer-col summary::-webkit-details-marker { display: none; }
+          .footer-chevron { display: none; }
+          /* Desktop: force columns open (content visible regardless of the
+             details toggle state) and remove the toggle affordance. */
+          @media (min-width: 769px) {
+            .footer-col > summary { pointer-events: none; }
+            .footer-col .footer-col-body { display: flex !important; }
+          }
+          /* Phones: accordions collapse to save vertical space. */
+          @media (max-width: 768px) {
+            .footer-links { gap: 0 !important; padding: 2rem 0 !important; }
+            .footer-brand { margin-bottom: 1.5rem; }
+            .footer-col { border-top: 1px solid var(--border); }
+            .footer-col > summary { padding: 1rem 0; margin-bottom: 0 !important; }
+            .footer-chevron { display: inline; }
+            .footer-col[open] .footer-chevron { transform: rotate(180deg); }
+            .footer-col > div { padding-bottom: 1rem; }
+          }
+        `}</style>
 
         {/* Bottom Section: Copyright */}
         <div style={{ borderTop: "1px solid var(--border)", padding: "1.5rem", textAlign: "center", fontSize: "0.85rem", color: "var(--fg-subtle)", background: "var(--bg)" }}>

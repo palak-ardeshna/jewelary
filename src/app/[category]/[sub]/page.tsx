@@ -57,7 +57,7 @@ export default async function SubCategoryPage({ params, searchParams }: { params
       <Breadcrumbs items={crumbs} />
 
       <header style={{ marginBottom:"3rem", marginTop:"2rem", textAlign: "center" }}>
-        <h1 className="t-display" style={{ fontSize:"3rem", marginBottom:"1rem" }}>{cat.name}</h1>
+        <h1 className="t-display" style={{ fontSize:"clamp(2.1rem, 8vw, 3rem)", marginBottom:"1rem" }}>{cat.name}</h1>
         {cat.description && <p style={{ color:"var(--fg-muted)", fontSize:"1rem", maxWidth: 600, margin: "0 auto" }}>{cat.description}</p>}
       </header>
 

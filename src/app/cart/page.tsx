@@ -46,10 +46,10 @@ export default function CartPage() {
                   <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:"0.5rem" }}>
                     <span style={{ fontWeight:400, fontSize:"1.1rem" }}>{fmt(item.priceInPaise)}</span>
                     <div style={{ display:"flex", alignItems:"center", gap:"0.5rem" }}>
-                      <button onClick={() => updateQty(item.id, item.size, item.quantity - 1)} style={{ width:28, height:28, border:"1px solid var(--border)", background:"none", cursor:"pointer", fontSize:"1rem" }}>−</button>
-                      <span style={{ fontWeight:400, minWidth:"1.5rem", textAlign:"center" }}>{item.quantity}</span>
-                      <button onClick={() => updateQty(item.id, item.size, item.quantity + 1)} style={{ width:28, height:28, border:"1px solid var(--border)", background:"none", cursor:"pointer", fontSize:"1rem" }}>+</button>
-                      <button onClick={() => removeItem(item.id, item.size)} style={{ marginLeft:"1rem", color:"var(--fg-muted)", background:"none", border:"none", cursor:"pointer", fontSize:"0.8rem", textTransform:"uppercase", letterSpacing:"0.05em" }}>Remove</button>
+                      <button aria-label="Decrease quantity" className="qty-btn" onClick={() => updateQty(item.id, item.size, item.quantity - 1)} style={{ width:36, height:36, border:"1px solid var(--border)", background:"none", cursor:"pointer", fontSize:"1rem", display:"flex", alignItems:"center", justifyContent:"center" }}>−</button>
+                      <span style={{ fontWeight:400, minWidth:"1.75rem", textAlign:"center" }}>{item.quantity}</span>
+                      <button aria-label="Increase quantity" className="qty-btn" onClick={() => updateQty(item.id, item.size, item.quantity + 1)} style={{ width:36, height:36, border:"1px solid var(--border)", background:"none", cursor:"pointer", fontSize:"1rem", display:"flex", alignItems:"center", justifyContent:"center" }}>+</button>
+                      <button onClick={() => removeItem(item.id, item.size)} style={{ marginLeft:"1rem", color:"var(--fg-muted)", background:"none", border:"none", cursor:"pointer", fontSize:"0.8rem", textTransform:"uppercase", letterSpacing:"0.05em", padding:"0.5rem 0" }}>Remove</button>
                     </div>
                   </div>
                 </div>
@@ -85,7 +85,33 @@ export default function CartPage() {
         </div>
       </div>
 
-      <style>{`@media(min-width:768px){.cart-grid{grid-template-columns:1fr 340px !important;}}`}</style>
+      {/* Mobile sticky checkout bar — jump straight to checkout without
+          scrolling past every line item + the full summary. */}
+      <div className="cart-mobile-bar">
+        <div>
+          <span style={{ fontSize:"0.72rem", color:"var(--fg-muted)", textTransform:"uppercase", letterSpacing:"0.05em" }}>Total</span>
+          <div style={{ fontWeight:600, fontSize:"1.1rem" }}>{fmt(grandTotal)}</div>
+        </div>
+        <Link href="/checkout" className="btn-accent" style={{ textDecoration:"none", flex:1, justifyContent:"center", maxWidth:220 }}>
+          Checkout →
+        </Link>
+      </div>
+
+      <style>{`
+        @media(min-width:768px){ .cart-grid{ grid-template-columns:1fr 340px !important; } }
+        @media(pointer:coarse){ .qty-btn{ width:40px !important; height:40px !important; } }
+        /* Sticky bottom checkout bar: mobile only */
+        .cart-mobile-bar{ display:none; }
+        @media(max-width:767px){
+          .cart-mobile-bar{
+            display:flex; align-items:center; gap:1rem; justify-content:space-between;
+            position:sticky; bottom:0; z-index:30; margin:1.5rem -1.25rem -4rem;
+            padding:0.85rem 1.25rem calc(0.85rem + env(safe-area-inset-bottom));
+            background:rgba(255,255,255,0.96); backdrop-filter:blur(10px);
+            border-top:1px solid var(--border);
+          }
+        }
+      `}</style>
     </div>
   );
 }
