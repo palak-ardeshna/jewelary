@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/server/db";
 import { saveCategory, deleteCategory } from "@/app/admin/actions";
+import { ConfirmButton } from "../ConfirmButton";
 
 export const dynamic = "force-dynamic";
 
@@ -51,7 +52,7 @@ export default async function AdminCategoriesPage({ searchParams }: { searchPara
                     <Link href={`/admin/categories?edit=${c.id}`} style={{ color: "#2563eb", textDecoration: "none", marginRight: "1rem" }}>Edit</Link>
                     <form action={deleteCategory} style={{ display: "inline" }}>
                       <input type="hidden" name="id" value={c.id} />
-                      <button type="submit" disabled={(countMap.get(c.id) ?? 0) > 0} title={(countMap.get(c.id) ?? 0) > 0 ? "Has products — reassign first" : "Delete"} style={{ background: "none", border: "none", color: (countMap.get(c.id) ?? 0) > 0 ? "#d6d3d1" : "#dc2626", cursor: (countMap.get(c.id) ?? 0) > 0 ? "not-allowed" : "pointer", fontSize: "0.88rem", padding: 0 }}>Delete</button>
+                      <ConfirmButton disabled={(countMap.get(c.id) ?? 0) > 0} title={(countMap.get(c.id) ?? 0) > 0 ? "Has products — reassign first" : "Delete"} message={`Delete category "${c.name}"?`} style={{ background: "none", border: "none", color: (countMap.get(c.id) ?? 0) > 0 ? "#d6d3d1" : "#dc2626", cursor: (countMap.get(c.id) ?? 0) > 0 ? "not-allowed" : "pointer", fontSize: "0.88rem", padding: 0 }}>Delete</ConfirmButton>
                     </form>
                   </td>
                 </tr>

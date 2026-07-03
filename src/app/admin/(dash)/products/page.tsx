@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/server/db";
 import { formatPrice } from "@/lib/site";
 import { deleteProduct } from "@/app/admin/actions";
+import { ConfirmButton } from "../ConfirmButton";
 
 export const dynamic = "force-dynamic";
 
@@ -47,7 +48,7 @@ export default async function AdminProductsPage() {
                   <Link href={`/admin/products/${p.id}`} style={{ color: "#2563eb", textDecoration: "none", marginRight: "1rem" }}>Edit</Link>
                   <form action={deleteProduct} style={{ display: "inline" }}>
                     <input type="hidden" name="id" value={p.id} />
-                    <button type="submit" style={{ background: "none", border: "none", color: "#dc2626", cursor: "pointer", fontSize: "0.88rem", padding: 0 }}>Delete</button>
+                    <ConfirmButton message={`Delete "${p.name}"? This cannot be undone.`} style={{ background: "none", border: "none", color: "#dc2626", cursor: "pointer", fontSize: "0.88rem", padding: 0 }}>Delete</ConfirmButton>
                   </form>
                 </td>
               </tr>

@@ -8,7 +8,13 @@ import { AnnouncementBar } from "@/components/AnnouncementBar";
 import { Header } from "@/components/Header";
 import { Icon } from "@/components/Icon";
 
-export function SiteChrome({ children }: { children: React.ReactNode }) {
+export function SiteChrome({
+  children, headerAd, footerAd,
+}: {
+  children: React.ReactNode;
+  headerAd?: React.ReactNode;
+  footerAd?: React.ReactNode;
+}) {
   const pathname = usePathname();
 
   // Admin runs chrome-free (it paints its own full-viewport surface).
@@ -22,10 +28,16 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
       {/* ── Header ── */}
       <Header />
 
+      {/* ── Admin-managed header ad slot ── */}
+      {headerAd}
+
       {/* ── Page ── */}
       <main id="main" style={{ maxWidth: "var(--container)", margin: "0 auto", padding: "1.5rem 1.25rem 4rem" }}>
         {children}
       </main>
+
+      {/* ── Admin-managed footer ad slot ── */}
+      {footerAd}
 
       {/* ── Footer ── */}
       <footer style={{ borderTop: "1px solid var(--border)", background: "var(--surface)", marginTop: "auto", paddingTop: "4rem" }}>

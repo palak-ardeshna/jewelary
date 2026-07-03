@@ -9,6 +9,7 @@ import { CartDrawer } from "@/components/CartDrawer";
 import { RouteProgress } from "@/components/RouteProgress";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { SiteChrome } from "@/components/SiteChrome";
+import { AdSlot } from "@/components/AdSlot";
 import { EngagementProvider } from "@/components/engagement/EngagementProvider";
 
 const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
@@ -32,7 +33,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <RouteProgress />
           <ScrollReveal />
 
-          <SiteChrome>{children}</SiteChrome>
+          <SiteChrome headerAd={<AdSlot name="header" />} footerAd={<AdSlot name="footer" />}>
+            {children}
+          </SiteChrome>
 
           <CartDrawer />
           <EngagementProvider />

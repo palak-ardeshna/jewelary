@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/server/db";
 import { requireAdmin, logout } from "@/server/auth";
+import { AD_SLOTS, saveAdsConfig, type AdSlotName, type AdSlotConfig } from "@/server/ads";
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 function str(fd: FormData, key: string): string { return (fd.get(key) as string | null)?.trim() ?? ""; }
@@ -35,6 +36,19 @@ function revalidateStorefront() {
 export async function logoutAction() {
   await logout();
   redirect("/admin/login");
+}
+
+// ── ads ──────────────────────────────────────────────────────────────────────
+export async function saveAds(fd: FormData) {
+  await requireAdmin();
+  const slots = {} as Record<AdSlotName, AdSlotConfig>;
+  for (const { name } of AD_SLOTS) {
+    slots[name] = { enabled: bool(fd, `slot_${name}_enabled`), code: str(fd, `slot_${name}_code`) };
+  }
+  await saveAdsConfig({ enabled: bool(fd, "enabled"), slots });
+  revalidateStorefront();
+  revalidatePath("/admin/ads");
+  redirect("/admin/ads");
 }
 
 // ── products ─────────────────────────────────────────────────────────────────

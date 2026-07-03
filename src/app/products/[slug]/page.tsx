@@ -10,6 +10,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { AddToCartButton } from "@/components/AddToCartButton";
 import { WishlistButton } from "@/components/WishlistButton";
 import { breadcrumbSchema, productSchema, type BreadcrumbItem } from "@/lib/schema-org";
+import { AdSlot } from "@/components/AdSlot";
 import { LowStock } from "@/components/engagement/LowStock";
 import { StickyAddToCart } from "@/components/engagement/StickyAddToCart";
 import { ProductViewTracker, RecentlyViewed } from "@/components/engagement/RecentlyViewed";
@@ -74,6 +75,8 @@ export default async function ProductPage({ params }: { params: Params }) {
     <div className="animate-fade-up">
       <JsonLd data={[breadcrumbSchema(crumbs), productSchema({ name:product.name, slug:product.slug, description:product.description, priceInPaise:product.priceInPaise, currency:product.currency, inStock:product.inStock, imageUrl:product.imageUrl, brandName:product.brand?.name, reviews:product.reviews })]} />
       <Breadcrumbs items={crumbs} />
+
+      <AdSlot name="productTop" />
 
       <div style={{ display:"grid", gap:"4rem", gridTemplateColumns:"1fr", marginTop:"1.5rem" }} className="pdp-grid">
         {/* Image - Sticky on Desktop */}
@@ -205,6 +208,8 @@ export default async function ProductPage({ params }: { params: Params }) {
           </div>
         </section>
       )}
+
+      <AdSlot name="productBottom" />
 
       {/* Recently viewed — client rail from localStorage */}
       <RecentlyViewed excludeSlug={product.slug} />

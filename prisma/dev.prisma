@@ -117,3 +117,11 @@ model AdminUser {
   passwordHash String
   createdAt    DateTime @default(now())
 }
+
+// Generic key/value settings (JSON as string). Used for the ads manager
+// (key = "ads") and any future site config editable from the admin.
+model Setting {
+  key       String   @id
+  valueJson String
+  updatedAt DateTime @updatedAt
+}

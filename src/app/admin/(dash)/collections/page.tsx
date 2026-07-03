@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/server/db";
 import { saveCollection, deleteCollection } from "@/app/admin/actions";
+import { ConfirmButton } from "../ConfirmButton";
 import { evaluateIndexability } from "@/lib/collections";
 import { findProductsByFilter } from "@/data/store";
 
@@ -72,7 +73,7 @@ export default async function AdminCollectionsPage({ searchParams }: { searchPar
                       <Link href={`/admin/collections?edit=${c.id}`} style={{ color: "#2563eb", textDecoration: "none", marginRight: "1rem" }}>Edit</Link>
                       <form action={deleteCollection} style={{ display: "inline" }}>
                         <input type="hidden" name="id" value={c.id} />
-                        <button type="submit" style={{ background: "none", border: "none", color: "#dc2626", cursor: "pointer", fontSize: "0.88rem", padding: 0 }}>Delete</button>
+                        <ConfirmButton message={`Delete collection "${c.title}"?`} style={{ background: "none", border: "none", color: "#dc2626", cursor: "pointer", fontSize: "0.88rem", padding: 0 }}>Delete</ConfirmButton>
                       </form>
                     </td>
                   </tr>
