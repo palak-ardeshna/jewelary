@@ -17,9 +17,11 @@
     "postinstall": "prisma generate --schema prisma/dev.prisma"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^6.19.3",
     "@prisma/client": "^6.19.3",
     "canvas-confetti": "^1.9.4",
     "next": "^15.1.4",
+    "pg": "^8.22.0",
     "prisma": "^6.19.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
@@ -28,6 +30,7 @@
     "@tailwindcss/postcss": "^4.0.0",
     "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^22.10.5",
+    "@types/pg": "^8.20.0",
     "@types/react": "^19.0.4",
     "@types/react-dom": "^19.0.2",
     "tailwindcss": "^4.0.0",
