@@ -1,6 +1,7 @@
 // Admin user guide, written in Gujarati, so a non-technical shop owner can run
-// the whole panel confidently. Pure static content (no DB).
-export const dynamic = "force-static";
+// the whole panel confidently. Dynamic (like the rest of the admin) so it sits
+// behind the auth middleware consistently.
+export const dynamic = "force-dynamic";
 
 export const metadata = { title: "માર્ગદર્શિકા (Guide)" };
 

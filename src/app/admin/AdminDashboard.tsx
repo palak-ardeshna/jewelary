@@ -97,6 +97,7 @@ export function AdminDashboard({ onLogout }: { onLogout: () => void }) {
           <button onClick={save} className="btn-primary btn-sm" disabled={!dirty}>{saved ? "Saved ✓" : "Save & preview"}</button>
           <button onClick={reset} className="btn-outline btn-sm">Reset</button>
           <button onClick={copyJson} className="btn-outline btn-sm">{copied ? "Copied ✓" : "Copy JSON"}</button>
+          <Link href="/admin" className="btn-outline btn-sm">← Admin</Link>
           <Link href="/" className="btn-outline btn-sm">View site</Link>
         </div>
 
