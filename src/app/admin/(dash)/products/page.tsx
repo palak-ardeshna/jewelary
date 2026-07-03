@@ -19,7 +19,7 @@ export default async function AdminProductsPage() {
         <Link href="/admin/products/new" style={{ padding: "0.65rem 1.25rem", background: "#1c1917", color: "#fff", borderRadius: 8, textDecoration: "none", fontSize: "0.9rem" }}>+ New product</Link>
       </div>
 
-      <div style={{ background: "#fff", border: "1px solid #e7e5e4", borderRadius: 12, overflow: "hidden" }}>
+      <div className="admin-table-wrap" style={{ background: "#fff", border: "1px solid #e7e5e4", borderRadius: 12 }}>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.88rem" }}>
           <thead>
             <tr style={{ background: "#faf8f5", textAlign: "left" }}>

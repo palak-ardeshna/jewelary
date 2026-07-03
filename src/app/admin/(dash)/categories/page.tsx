@@ -17,7 +17,7 @@ export default async function AdminCategoriesPage({ searchParams }: { searchPara
     <div>
       <h1 style={{ fontFamily: "var(--font-display, serif)", fontSize: "2rem", marginBottom: "1.5rem" }}>Categories</h1>
 
-      <div style={{ display: "grid", gridTemplateColumns: "320px 1fr", gap: "2rem", alignItems: "start" }}>
+      <div className="admin-split">
         {/* Create / edit form */}
         <form action={saveCategory} style={{ background: "#fff", border: "1px solid #e7e5e4", borderRadius: 12, padding: "1.25rem" }}>
           <h2 style={{ fontSize: "1rem", fontWeight: 600, marginBottom: "1rem" }}>{editing ? "Edit category" : "New category"}</h2>
@@ -39,7 +39,7 @@ export default async function AdminCategoriesPage({ searchParams }: { searchPara
         </form>
 
         {/* List */}
-        <div style={{ background: "#fff", border: "1px solid #e7e5e4", borderRadius: 12, overflow: "hidden" }}>
+        <div className="admin-table-wrap" style={{ background: "#fff", border: "1px solid #e7e5e4", borderRadius: 12 }}>
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.88rem" }}>
             <thead><tr style={{ background: "#faf8f5", textAlign: "left" }}><th style={th}>Name</th><th style={th}>Parent</th><th style={th}>Products</th><th style={th}></th></tr></thead>
             <tbody>

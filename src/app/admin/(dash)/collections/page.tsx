@@ -32,7 +32,7 @@ export default async function AdminCollectionsPage({ searchParams }: { searchPar
     <div>
       <h1 style={{ fontFamily: "var(--font-display, serif)", fontSize: "2rem", marginBottom: "1.5rem" }}>Collections</h1>
 
-      <div style={{ display: "grid", gridTemplateColumns: "340px 1fr", gap: "2rem", alignItems: "start" }}>
+      <div className="admin-split">
         <form action={saveCollection} style={{ background: "#fff", border: "1px solid #e7e5e4", borderRadius: 12, padding: "1.25rem" }}>
           <h2 style={{ fontSize: "1rem", fontWeight: 600, marginBottom: "1rem" }}>{editing ? "Edit collection" : "New collection"}</h2>
           {editing && <input type="hidden" name="id" value={editing.id} />}
@@ -54,7 +54,7 @@ export default async function AdminCollectionsPage({ searchParams }: { searchPar
           </div>
         </form>
 
-        <div style={{ background: "#fff", border: "1px solid #e7e5e4", borderRadius: 12, overflow: "hidden" }}>
+        <div className="admin-table-wrap" style={{ background: "#fff", border: "1px solid #e7e5e4", borderRadius: 12 }}>
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.88rem" }}>
             <thead><tr style={{ background: "#faf8f5", textAlign: "left" }}><th style={th}>Title</th><th style={th}>Products</th><th style={th}>Indexable</th><th style={th}></th></tr></thead>
             <tbody>
