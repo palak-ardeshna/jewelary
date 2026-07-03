@@ -45,17 +45,17 @@ export function ProductCard({ product }: { product: ProductCardData }) {
           )}
           <WishlistButton productId={product.slug} variant="card" />
           {/* Badges */}
-          {product.mrpInPaise && product.priceInPaise < product.mrpInPaise && (
-             <span className="badge badge-neutral" style={{ position:"absolute", top:"1rem", left:"1rem" }}>Bestseller</span>
-          )}
           {product.inStock === false && (
             <div style={{ position:"absolute", inset:0, background:"rgb(0 0 0 / 0.4)", display:"flex", alignItems:"center", justifyContent:"center" }}>
               <span style={{ background:"#fff", color:"var(--fg)", padding:"0.25rem 0.75rem", borderRadius:99, fontSize:"0.75rem", fontWeight:700 }}>Out of stock</span>
             </div>
           )}
-          {product.tags && product.tags.length > 0 && product.inStock !== false && (
-            <div style={{ position:"absolute", top:"0.5rem", left:"0.5rem", display:"flex", flexDirection:"column", gap:"0.25rem" }}>
-              {product.tags.map(tag => (
+          {product.inStock !== false && ((product.tags && product.tags.length > 0) || discount > 0) && (
+            <div style={{ position:"absolute", top:"0.5rem", left:"0.5rem", display:"flex", flexDirection:"column", gap:"0.25rem", alignItems:"flex-start" }}>
+              {discount > 0 && (
+                <span className="badge badge-dark" style={{ padding: "0.2rem 0.5rem", fontSize: "0.6rem" }}>{discount}% OFF</span>
+              )}
+              {product.tags?.map(tag => (
                 <span key={tag} className={`badge ${tag === 'Best Seller' ? 'badge-gold' : tag === 'Limited Stock' ? 'badge-dark' : 'badge-neutral'}`} style={{ padding: "0.2rem 0.5rem", fontSize: "0.6rem" }}>{tag}</span>
               ))}
             </div>
