@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
-// The demo admin must never be indexed or advertised. It's a per-browser
-// preview tool, not a real multi-user dashboard (static export — no backend).
+// Admin must never be indexed. Real server-side auth guards the (dash) group;
+// the login route sits outside it.
 export const metadata: Metadata = {
-  title: "Engagement Admin (Demo)",
+  title: "Aurelia Admin",
   robots: { index: false, follow: false },
 };
 

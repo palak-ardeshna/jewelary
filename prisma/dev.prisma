@@ -1,0 +1,119 @@
+// ============================================================================
+// Aurelia — ACTIVE runtime schema (PostgreSQL — local + Vercel/Railway).
+//
+// This is the schema Prisma actually runs against, a pragmatic CATALOG subset
+// of the canonical model in `schema.prisma`. Set DATABASE_URL to your Railway
+// Postgres URL (both local .env and the Vercel dashboard). List/object fields
+// (sizes, tags, gemstones, certifications) are stored as JSON strings and
+// (de)serialised in the repository layer (src/data/store.ts) — kept portable.
+//
+// Money is integer paise. `npm run db:push` creates tables; the catalogue
+// auto-seeds on first server start (src/instrumentation.ts).
+// ============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Brand {
+  id        String    @id @default(cuid())
+  slug      String    @unique
+  name      String
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Category {
+  id          String     @id @default(cuid())
+  slug        String     @unique
+  name        String
+  description String?
+  parentId    String?
+  parent      Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryTree")
+  products    Product[]
+  position    Int        @default(0)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([parentId])
+}
+
+model Product {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  name           String
+  description    String
+  priceInPaise   Int
+  mrpInPaise     Int?
+  currency       String   @default("INR")
+  inStock        Boolean  @default(true)
+  stockUnits     Int?
+  color          String?
+  imageUrl       String?
+  categoryId     String
+  category       Category @relation(fields: [categoryId], references: [id])
+  brandId        String?
+  brand          Brand?   @relation(fields: [brandId], references: [id])
+  rating         Float?
+  reviewCount    Int      @default(0)
+  // JSON-encoded lists/objects (SQLite has no arrays/Json):
+  sizes          String?  // string[]  e.g. ["10","11"]
+  gemstones      String?  // Gemstone[] JSON
+  certifications String?  // Certification[] JSON
+  tags           String?  // string[] JSON
+  metal          String?
+  purity         String?
+  grossWeightG   Float?
+  collectionLine String?
+  gender         String?
+  status         String   @default("ACTIVE") // ACTIVE | DRAFT | ARCHIVED
+  reviews        Review[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([categoryId])
+  @@index([status])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  rating    Int
+  author    String
+  body      String
+  createdAt DateTime @default(now())
+
+  @@index([productId])
+}
+
+model Collection {
+  id                    String   @id @default(cuid())
+  slug                  String   @unique
+  title                 String
+  intro                 String?
+  // flattened CollectionFilter:
+  filterCategorySlug    String?
+  filterBrandSlug       String?
+  filterColor           String?
+  filterMaxPriceInPaise Int?
+  isCurated             Boolean  @default(false)
+  position              Int      @default(0)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+// Real server-side admin identity (replaces the client-inlined demo gate).
+model AdminUser {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}

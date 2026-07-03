@@ -1,19 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Produce a fully static site in /out for upload to Hostinger shared hosting.
-  output: "export",
-  // No Next image optimizer on static hosting — serve images as-is.
+  // Dynamic backend: the app now runs on a Node server (Prisma/SQLite), reading
+  // live catalog data from the database. (Previously output: "export" static.)
   images: {
     unoptimized: true,
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
     ],
   },
-  // Emit /path/index.html so Apache/LiteSpeed serves clean URLs without rewrites.
-  trailingSlash: true,
-  // Allow loading the dev server over the LAN IP (e.g. testing from another
-  // device) without the Next 15 cross-origin dev warning. Dev-only; ignored by
-  // the static export/production build.
+  // Keep the Prisma engine out of the server bundle tracing noise.
+  serverExternalPackages: ["@prisma/client", "prisma"],
+  // Allow loading the dev server over the LAN IP without the cross-origin warning.
   allowedDevOrigins: ["192.168.1.21"],
 };
 

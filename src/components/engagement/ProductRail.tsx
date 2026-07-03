@@ -1,17 +1,15 @@
 // Tag-driven product rail (best-sellers / trending / any admin-defined tag).
 // Server component: filters the store by the configured tag. Renders nothing if
 // the rail is disabled or no products carry the tag — no empty shells.
-import { products } from "@/data/store";
+import { getProductsByTag } from "@/data/store";
 import { engagementConfig } from "@/lib/engagement/config";
 import { ProductCard } from "@/components/ProductCard";
 
-export function ProductRail({ id }: { id: string }) {
+export async function ProductRail({ id }: { id: string }) {
   const cfg = engagementConfig.rails.find((r) => r.id === id);
   if (!cfg?.targeting.enabled || !engagementConfig.masterEnabled) return null;
 
-  const items = products
-    .filter((p) => p.inStock && p.tags?.includes(cfg.tag))
-    .slice(0, cfg.maxItems);
+  const items = (await getProductsByTag(cfg.tag)).slice(0, cfg.maxItems);
   if (!items.length) return null;
 
   return (

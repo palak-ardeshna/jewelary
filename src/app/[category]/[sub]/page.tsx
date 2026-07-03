@@ -1,51 +1,49 @@
-import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import Link from "next/link";
-import { categories, getCategoryBySlug, getProductsByCategoryId } from "@/data/store";
+import { getCategoryBySlug, getProductsByCategoryId } from "@/data/store";
 import { absUrl } from "@/lib/site";
 import { JsonLd } from "@/components/JsonLd";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { CategoryProducts } from "@/components/CategoryProducts";
 import { breadcrumbSchema, itemListSchema, type BreadcrumbItem } from "@/lib/schema-org";
 
-export function generateStaticParams() {
-  return categories
-    .filter((c) => c.parentId) // Only sub-categories
-    .map((c) => {
-      const parent = categories.find((p) => p.id === c.parentId);
-      return { category: parent!.slug, sub: c.slug };
-    });
-}
+export const dynamic = "force-dynamic";
 
-function resolveCategory(category: string, sub: string) {
-  const leaf = getCategoryBySlug(sub);
+async function resolveCategory(category: string, sub: string) {
+  const leaf = await getCategoryBySlug(sub);
   if (!leaf) return null;
-  const parent = getCategoryBySlug(category);
+  const parent = await getCategoryBySlug(category);
   if (leaf.parentId !== parent?.id) return null;
   return leaf;
 }
 
 type Params = Promise<{ category: string; sub: string }>;
+type Search = Promise<{ color?: string; maxPrice?: string; sort?: string }>;
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { category, sub } = await params;
-  const cat = resolveCategory(category, sub);
+  const cat = await resolveCategory(category, sub);
   if (!cat) return {};
   const path = `/${category}/${sub}`;
   return { title: cat.name, description: cat.description ?? `Shop ${cat.name} at Aurelia.`, alternates: { canonical: absUrl(path) } };
 }
 
-export default async function SubCategoryPage({ params }: { params: Params }) {
+export default async function SubCategoryPage({ params, searchParams }: { params: Params; searchParams: Search }) {
   const { category, sub } = await params;
+  const { color, maxPrice, sort } = await searchParams;
 
-  const cat = resolveCategory(category, sub);
+  const cat = await resolveCategory(category, sub);
   if (!cat) notFound();
 
   const path = `/${category}/${sub}`;
 
   // Unfiltered list drives the page's ItemList schema
-  const allProducts = getProductsByCategoryId(cat.id);
+  const allProducts = await getProductsByCategoryId(cat.id);
+  const filtered = await getProductsByCategoryId(cat.id, {
+    color: color || undefined,
+    maxPriceInPaise: maxPrice ? parseInt(maxPrice) * 100 : undefined,
+    sort,
+  });
 
   const crumbs: BreadcrumbItem[] = [
     { name: "Home", path: "/" },
@@ -63,9 +61,7 @@ export default async function SubCategoryPage({ params }: { params: Params }) {
         {cat.description && <p style={{ color:"var(--fg-muted)", fontSize:"1rem", maxWidth: 600, margin: "0 auto" }}>{cat.description}</p>}
       </header>
 
-      <Suspense fallback={null}>
-        <CategoryProducts categoryId={cat.id} path={path} />
-      </Suspense>
+      <CategoryProducts products={filtered} path={path} color={color} maxPrice={maxPrice} sort={sort} />
     </div>
   );
 }

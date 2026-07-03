@@ -3,11 +3,13 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { ProductCard } from "@/components/ProductCard";
-import { products } from "@/data/store";
+import { fetchCatalog } from "@/lib/catalog-client";
+import type { Product } from "@/lib/catalog-types";
 
 export function WishlistClient() {
   const [mounted, setMounted] = useState(false);
   const [wishlist, setWishlist] = useState<string[]>([]);
+  const [catalog, setCatalog] = useState<Product[]>([]);
 
   useEffect(() => {
     setMounted(true);
@@ -18,13 +20,14 @@ export function WishlistClient() {
         if (Array.isArray(list)) setWishlist(list);
       } catch (e) {}
     }
+    fetchCatalog().then(setCatalog);
   }, []);
 
   if (!mounted) {
     return <div style={{ minHeight: "50vh" }} />; // skeleton
   }
 
-  const likedProducts = products.filter(p => wishlist.includes(p.slug));
+  const likedProducts = catalog.filter(p => wishlist.includes(p.slug));
 
   if (likedProducts.length === 0) {
     return (

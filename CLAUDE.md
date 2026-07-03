@@ -7,37 +7,57 @@ Guidance for Claude Code (and other agents) working in this repo.
 **Aurelia** — a Next.js 15 (App Router, React 19) fine-jewellery e-commerce SEO
 storefront (npm package name still `trendora`). Buyer-intent SEO with *safe
 programmatic collections* and automated schema.org JSON-LD, plus a config-driven
-customer-engagement layer. **No runtime database** — all data is a static
-in-memory store ([`src/data/store.ts`](src/data/store.ts)) that mirrors the
-canonical Prisma model 1:1; the export ships as fully static files.
+customer-engagement layer.
+
+**Now DB-backed & dynamic** (catalog Track B). Data lives in a **Prisma + SQLite**
+database ([`prisma/dev.prisma`](prisma/dev.prisma), file `prisma/dev.db`). The
+storefront renders dynamically from the DB and a real, session-authenticated
+**admin panel** at `/admin` does live CRUD on products/categories/collections.
+The DB **auto-seeds on server start** from [`src/server/seed-data.ts`](src/server/seed-data.ts)
+via [`src/instrumentation.ts`](src/instrumentation.ts). The full canonical Postgres
+model still lives in [`prisma/schema.prisma`](prisma/schema.prisma) as the source
+of truth; `dev.prisma` is the pragmatic catalog subset that runs. Details in
+[`docs/DYNAMIC_BACKEND.md`](docs/DYNAMIC_BACKEND.md).
 
 ## Commands
 
 ```bash
-npm install
-npm run dev      # dev server → http://localhost:3000
-npm run build    # static export → ./out  (output: "export")
+npm install      # postinstall generates the Prisma client
+npm run dev      # db:push (predev) → dev server → http://localhost:3000 (auto-seeds)
+npm run build    # prisma generate → next build (dynamic, Node runtime)
 npm run lint     # next lint
+npm run db:studio  # inspect the SQLite data
+npm run db:reset   # wipe + recreate the DB (re-seeds on next start)
 ```
 
 There is no test suite. Verify changes by running `npm run dev` and checking the
-routes below, or `npm run build` to confirm the static export succeeds.
+routes below, or `npm run build` to confirm the build succeeds.
 
 ## Architecture
 
-- **Static, DB-free data layer** — [`src/data/store.ts`](src/data/store.ts) holds
-  all products/categories/collections and exposes DB-like query helpers. To move
-  to a real DB later, swap this one file for Prisma calls; routes stay unchanged.
-  The canonical schema lives in [`prisma/schema.prisma`](prisma/schema.prisma)
-  (not run at runtime on the static host). Conventions from it: money is integer
-  *paise*, weights are integer *milligrams* — never floats.
-- **Routing** (`src/app/`, App Router):
+- **Repository data layer (DB-backed)** — [`src/data/store.ts`](src/data/store.ts)
+  exposes async query helpers over Prisma/SQLite; routes/components import only
+  those helpers, never Prisma directly. This is the seam that kept the swap to a
+  real DB to essentially one file. Public catalog types live in the client-safe
+  [`src/lib/catalog-types.ts`](src/lib/catalog-types.ts) (so client components can
+  type catalog data without pulling Prisma into the browser bundle). The Prisma
+  client singleton is [`src/server/db.ts`](src/server/db.ts). SQLite has no
+  arrays/JSON, so list/object fields (sizes, tags, gemstones, certifications) are
+  stored as JSON strings and (de)serialised in the repository. Money is integer
+  *paise*; weights integer *milligrams* — never floats.
+- **Client data access** — client components fetch catalog data via `/api/catalog`
+  and `/api/search` (see [`src/lib/catalog-client.ts`](src/lib/catalog-client.ts));
+  they must NOT import the server repository.
+- **Routing** (`src/app/`, App Router; catalog pages are `dynamic = "force-dynamic"`):
   - `/` home · `/[category]` · `/[category]/[sub]` · `/products/[slug]` ·
     `/c/[slug]` programmatic collections · plus `cart`, `checkout`,
     `checkout/success`, `wishlist`, `account`, `account/orders`, `search`.
-  - `/admin` — client-side config dashboard for the engagement system. The gate
-    is `sessionStorage` + `NEXT_PUBLIC_ADMIN_*` creds: a convenience gate, **not
-    real security** (static export has no server).
+  - `/admin` — **real** session-authed admin (catalog CRUD). Auth is scrypt-hashed
+    passwords + an HMAC-signed HttpOnly cookie ([`src/server/auth.ts`](src/server/auth.ts));
+    route protection is [`src/middleware.ts`](src/middleware.ts) (Edge, returns a
+    hard 307 to `/admin/login`). The old engagement-config editor lives at
+    `/admin/engagement`. Mutations are server actions in
+    [`src/app/admin/actions.ts`](src/app/admin/actions.ts).
   - `robots.ts` and `sitemap.ts` are generated.
 - **Engagement system** — config-driven conversion layer under
   [`src/lib/engagement/`](src/lib/engagement) (config, targeting, A/B, analytics)
@@ -57,10 +77,12 @@ routes below, or `npm run build` to confirm the static export succeeds.
 
 ## Deployment
 
-Configured for **static export** ([`next.config.mjs`](next.config.mjs):
-`output: "export"`, `trailingSlash: true`, `images.unoptimized`). `npm run build`
-writes a fully static site to `./out/` for upload to shared hosting
-(Hostinger/Apache/LiteSpeed). Images are served as-is (no Next optimizer).
+Now a **dynamic Node app** (Prisma/SQLite) — `output: "export"` has been removed
+([`next.config.mjs`](next.config.mjs)). `npm run build` produces a standard Next
+server build; run with `npm start` (needs a Node host, not static shared hosting).
+`images.unoptimized` is kept. For production, point Prisma at Postgres (the
+canonical [`prisma/schema.prisma`](prisma/schema.prisma)) and set a strong
+`SESSION_SECRET`. See [`docs/DYNAMIC_BACKEND.md`](docs/DYNAMIC_BACKEND.md).
 
 ## Conventions
 

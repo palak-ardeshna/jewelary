@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { absUrl } from "@/lib/site";
-import { collections } from "@/data/store";
 import { resolveCollection } from "@/lib/collections";
 import { JsonLd } from "@/components/JsonLd";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -9,15 +8,13 @@ import { ProductCard } from "@/components/ProductCard";
 import { Icon } from "@/components/Icon";
 import { breadcrumbSchema, itemListSchema, type BreadcrumbItem } from "@/lib/schema-org";
 
-export function generateStaticParams() {
-  return collections.map((c) => ({ slug: c.slug }));
-}
+export const dynamic = "force-dynamic";
 
 type Params = Promise<{ slug: string }>;
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
-  const collection = resolveCollection(slug);
+  const collection = await resolveCollection(slug);
   if (!collection) return {};
   return {
     title: collection.title,
@@ -29,7 +26,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
 export default async function CollectionPage({ params }: { params: Params }) {
   const { slug } = await params;
-  const collection = resolveCollection(slug);
+  const collection = await resolveCollection(slug);
   if (!collection) notFound();
 
   const crumbs: BreadcrumbItem[] = [

@@ -13,7 +13,7 @@
 // This keeps the "thousands of pages" upside without the doorway-page downside.
 
 import {
-  collections,
+  getCollections,
   findProductsByFilter,
   getCollectionBySlug,
   type Product,
@@ -59,11 +59,11 @@ export function evaluateIndexability(input: {
 }
 
 // Load a collection by slug, run its filter, and attach the indexability verdict.
-export function resolveCollection(slug: string): ResolvedCollection | null {
-  const collection = getCollectionBySlug(slug);
+export async function resolveCollection(slug: string): Promise<ResolvedCollection | null> {
+  const collection = await getCollectionBySlug(slug);
   if (!collection) return null;
 
-  const matched = findProductsByFilter(collection.filter);
+  const matched = await findProductsByFilter(collection.filter);
   const { indexable, reasons } = evaluateIndexability({
     intro: collection.intro,
     productCount: matched.length,
@@ -80,12 +80,14 @@ export function resolveCollection(slug: string): ResolvedCollection | null {
 
 // Return slugs of every collection that is currently safe to index — used by the
 // sitemap so we never advertise a thin page to Google.
-export function indexableCollectionSlugs(): string[] {
-  return collections
-    .filter((c) => {
-      const count = findProductsByFilter(c.filter).length;
-      return evaluateIndexability({ intro: c.intro, productCount: count })
-        .indexable;
-    })
-    .map((c) => c.slug);
+export async function indexableCollectionSlugs(): Promise<string[]> {
+  const collections = await getCollections();
+  const results = await Promise.all(
+    collections.map(async (c) => {
+      const count = (await findProductsByFilter(c.filter)).length;
+      const { indexable } = evaluateIndexability({ intro: c.intro, productCount: count });
+      return indexable ? c.slug : null;
+    }),
+  );
+  return results.filter((s): s is string => s !== null);
 }

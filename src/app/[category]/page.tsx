@@ -1,56 +1,58 @@
-import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { categories, getCategoryBySlug, getProductsByCategoryId } from "@/data/store";
+import { getCategoryBySlug, getProductsByCategoryId } from "@/data/store";
 import { absUrl } from "@/lib/site";
 import { JsonLd } from "@/components/JsonLd";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { CategoryProducts } from "@/components/CategoryProducts";
 import { breadcrumbSchema, itemListSchema, type BreadcrumbItem } from "@/lib/schema-org";
 
-export function generateStaticParams() {
-  return categories
-    .filter((c) => !c.parentId) // Only top-level categories
-    .map((c) => ({ category: c.slug }));
-}
+export const dynamic = "force-dynamic";
 
-function resolveCategory(category: string) {
-  const leaf = getCategoryBySlug(category);
+async function resolveCategory(category: string) {
+  const leaf = await getCategoryBySlug(category);
   if (!leaf || leaf.parentId) return null;
   return leaf;
 }
 
 type Params = Promise<{ category: string }>;
+type Search = Promise<{ color?: string; maxPrice?: string; sort?: string }>;
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { category } = await params;
-  const cat = resolveCategory(category);
+  const cat = await resolveCategory(category);
   if (!cat) return {};
   const path = `/${category}`;
   return { title: cat.name, description: cat.description ?? `Shop ${cat.name} at Aurelia.`, alternates: { canonical: absUrl(path) } };
 }
 
-export default async function CategoryPage({ params }: { params: Params }) {
+export default async function CategoryPage({ params, searchParams }: { params: Params; searchParams: Search }) {
   const { category } = await params;
+  const { color, maxPrice, sort } = await searchParams;
 
-  const cat = resolveCategory(category);
+  const cat = await resolveCategory(category);
   if (!cat) notFound();
 
   const path = `/${category}`;
 
   // Unfiltered list drives the page's ItemList schema — the canonical
   // (filterless) view is what we want indexed.
-  const allProducts = getProductsByCategoryId(cat.id);
+  const allProducts = await getProductsByCategoryId(cat.id);
+
+  // Filtered list (server-side now — replaces the old client-only filtering).
+  const filtered = await getProductsByCategoryId(cat.id, {
+    color: color || undefined,
+    maxPriceInPaise: maxPrice ? parseInt(maxPrice) * 100 : undefined,
+    sort,
+  });
 
   const crumbs: BreadcrumbItem[] = [
     { name: "Home", path: "/" },
     { name: category.replace(/-/g, " "), path: `/${category}` }
   ];
 
-  // We need to fetch children dynamically if `cat.children` is not natively available
-  // wait, the old code had `cat.children`. Let's assume it exists or was a typo for `categories.filter(c => c.parentId === cat.id)`.
-  const children = categories.filter(c => c.parentId === cat.id);
+  const children = cat.children;
 
   return (
     <div className="animate-fade-up">
@@ -73,9 +75,7 @@ export default async function CategoryPage({ params }: { params: Params }) {
         </nav>
       )}
 
-      <Suspense fallback={null}>
-        <CategoryProducts categoryId={cat.id} path={path} />
-      </Suspense>
+      <CategoryProducts products={filtered} path={path} color={color} maxPrice={maxPrice} sort={sort} />
     </div>
   );
 }

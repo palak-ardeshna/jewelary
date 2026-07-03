@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { SmartImage } from "@/components/SmartImage";
 import { Icon } from "@/components/Icon";
-import { getProductBySlug, getRelatedProducts, products } from "@/data/store";
+import { getProductBySlug, getRelatedProducts } from "@/data/store";
 import { absUrl, formatPrice } from "@/lib/site";
 import { JsonLd } from "@/components/JsonLd";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -15,15 +15,13 @@ import { StickyAddToCart } from "@/components/engagement/StickyAddToCart";
 import { ProductViewTracker, RecentlyViewed } from "@/components/engagement/RecentlyViewed";
 import { resolveCrossSell } from "@/lib/engagement/crosssell";
 
-export function generateStaticParams() {
-  return products.map((p) => ({ slug: p.slug }));
-}
+export const dynamic = "force-dynamic";
 
 type Params = Promise<{ slug: string }>;
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product) return {};
   return {
     title: product.name,
@@ -59,12 +57,12 @@ function TrustBadges() {
 
 export default async function ProductPage({ params }: { params: Params }) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product) notFound();
 
-  const related = getRelatedProducts(product.id, product.categoryId, 4);
+  const related = await getRelatedProducts(product.id, product.categoryId, 4);
   const discount = product.mrpInPaise ? Math.round((1 - product.priceInPaise / product.mrpInPaise) * 100) : 0;
-  const crossSell = resolveCrossSell(product.slug);
+  const crossSell = await resolveCrossSell(product.slug);
 
   const crumbs: BreadcrumbItem[] = [
     { name: "Home", path: "/" },

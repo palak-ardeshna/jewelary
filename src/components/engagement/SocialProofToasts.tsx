@@ -5,7 +5,8 @@
 // corner popup (bottom-right). Dismissible; respects the master switch.
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getProductBySlug } from "@/data/store";
+import { fetchCatalog } from "@/lib/catalog-client";
+import type { Product } from "@/lib/catalog-types";
 import { useEngagementConfig } from "@/lib/engagement/useEngagementConfig";
 import { track } from "@/lib/engagement/analytics";
 import { Icon } from "@/components/Icon";
@@ -21,8 +22,13 @@ export function SocialProofToasts() {
   const cfg = config.socialProof;
   const [idx, setIdx] = useState(-1);
   const [dismissed, setDismissed] = useState(false);
+  const [bySlug, setBySlug] = useState<Map<string, Product>>(new Map());
 
-  const events = (cfg?.events ?? []).filter((e) => getProductBySlug(e.productSlug));
+  useEffect(() => {
+    fetchCatalog().then((list) => setBySlug(new Map(list.map((p) => [p.slug, p]))));
+  }, []);
+
+  const events = (cfg?.events ?? []).filter((e) => bySlug.has(e.productSlug));
 
   useEffect(() => {
     if (!cfg?.targeting.enabled || !config.masterEnabled || dismissed || !events.length) return;
@@ -37,12 +43,13 @@ export function SocialProofToasts() {
     const interval = window.setInterval(showNext, cfg.intervalSeconds * 1000);
     return () => { window.clearTimeout(first); window.clearInterval(interval); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dismissed]);
+  }, [dismissed, events.length]);
 
   if (!cfg?.targeting.enabled || !config.masterEnabled || dismissed || idx < 0) return null;
 
   const ev = events[idx];
-  const product = getProductBySlug(ev.productSlug);
+  if (!ev) return null;
+  const product = bySlug.get(ev.productSlug);
   if (!product) return null;
 
   return (

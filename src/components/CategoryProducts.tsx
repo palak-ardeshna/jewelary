@@ -1,27 +1,18 @@
-"use client";
-
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { getProductsByCategoryId } from "@/data/store";
+import type { Product } from "@/lib/catalog-types";
 import { ProductCard } from "@/components/ProductCard";
 import { Icon } from "@/components/Icon";
 
 const METALS = ["Yellow Gold","White Gold","Rose Gold","Platinum","Silver"];
 
-// Filter bar + results are rendered client-side so they react to the URL query
-// string (?color=&maxPrice=&sort=) on a static host where the server can't.
-export function CategoryProducts({ categoryId, path }: { categoryId: string; path: string }) {
-  const params = useSearchParams();
-  const color = params.get("color") ?? undefined;
-  const maxPrice = params.get("maxPrice") ?? undefined;
-  const sort = params.get("sort") ?? undefined;
-
-  const products = getProductsByCategoryId(categoryId, {
-    color: color || undefined,
-    maxPriceInPaise: maxPrice ? parseInt(maxPrice) * 100 : undefined,
-    sort,
-  });
-
+// Presentational filter bar + results. The server page now does the filtering
+// (reads ?color=&maxPrice=&sort= and queries the DB) and passes the results in;
+// the filter controls are just links that change the URL and re-render server-side.
+export function CategoryProducts({
+  products, path, color, maxPrice, sort,
+}: {
+  products: Product[]; path: string; color?: string; maxPrice?: string; sort?: string;
+}) {
   const buildUrl = (overrides: Record<string, string | undefined>) => {
     const p = new URLSearchParams();
     const merged: Record<string, string | undefined> = { color, maxPrice, sort, ...overrides };

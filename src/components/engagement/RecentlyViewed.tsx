@@ -3,7 +3,8 @@
 // the current product slug (localStorage, no PII) on mount; `RecentlyViewed`
 // renders the capped, most-recent-first list, excluding the product you're on.
 import { useEffect, useState } from "react";
-import { products } from "@/data/store";
+import { fetchCatalog } from "@/lib/catalog-client";
+import type { Product } from "@/lib/catalog-types";
 import { useEngagementConfig } from "@/lib/engagement/useEngagementConfig";
 import { getRecentlyViewed, pushRecentlyViewed } from "@/lib/engagement/runtime";
 import { track } from "@/lib/engagement/analytics";
@@ -18,14 +19,15 @@ export function RecentlyViewed({ excludeSlug }: { excludeSlug?: string }) {
   const config = useEngagementConfig();
   const cfg = config.recentlyViewed;
   const [slugs, setSlugs] = useState<string[]>([]);
+  const [catalog, setCatalog] = useState<Product[]>([]);
 
-  useEffect(() => { setSlugs(getRecentlyViewed()); }, []);
+  useEffect(() => { setSlugs(getRecentlyViewed()); fetchCatalog().then(setCatalog); }, []);
 
   if (!cfg?.targeting.enabled || !config.masterEnabled) return null;
 
   const items = slugs
     .filter((s) => s !== excludeSlug)
-    .map((s) => products.find((p) => p.slug === s))
+    .map((s) => catalog.find((p) => p.slug === s))
     .filter((p): p is NonNullable<typeof p> => !!p)
     .slice(0, cfg.maxItems);
 

@@ -4,14 +4,23 @@
   "private": true,
   "description": "E-commerce SEO storefront — category/collection/product routing with schema automation and safe programmatic collections (static data, no DB)",
   "scripts": {
+    "predev": "prisma db push --schema prisma/dev.prisma",
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate --schema prisma/dev.prisma && next build",
+    "prestart": "prisma db push --schema prisma/dev.prisma",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:push": "prisma db push --schema prisma/dev.prisma",
+    "db:generate": "prisma generate --schema prisma/dev.prisma",
+    "db:studio": "prisma studio --schema prisma/dev.prisma",
+    "db:reset": "prisma db push --force-reset --schema prisma/dev.prisma",
+    "postinstall": "prisma generate --schema prisma/dev.prisma"
   },
   "dependencies": {
+    "@prisma/client": "^6.19.3",
     "canvas-confetti": "^1.9.4",
     "next": "^15.1.4",
+    "prisma": "^6.19.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

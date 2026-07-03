@@ -1,16 +1,20 @@
 import Link from "next/link";
-import { getTopCategories, getCollections, getInStockProducts, reviews } from "@/data/store";
+import { getTopCategories, getInStockProducts, getRecentReviews } from "@/data/store";
 import { ProductCard } from "@/components/ProductCard";
 import { SmartImage } from "@/components/SmartImage";
 import { Icon } from "@/components/Icon";
 import { ProductRail } from "@/components/engagement/ProductRail";
 
-export default function HomePage() {
-  const categories = getTopCategories();
-  const collections = getCollections(3);
-  const featured = getInStockProducts().slice(0, 4);
-  const gifting = getInStockProducts().filter((p) => p.priceInPaise <= 20000).slice(0, 4);
-  const homeReviews = reviews.slice(0, 3);
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const [categories, inStock, homeReviews] = await Promise.all([
+    getTopCategories(),
+    getInStockProducts(),
+    getRecentReviews(3),
+  ]);
+  const featured = inStock.slice(0, 4);
+  const gifting = inStock.filter((p) => p.priceInPaise <= 20000).slice(0, 4);
 
   const catImages: Record<string, string> = {
     "rings":       "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&q=80&fit=crop&auto=format",
