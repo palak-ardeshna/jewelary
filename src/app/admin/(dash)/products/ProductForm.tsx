@@ -22,7 +22,7 @@ export function ProductForm({
 }) {
   const d = defaults;
   return (
-    <form action={saveProduct} style={{ maxWidth: 760 }}>
+    <form action={saveProduct} style={{ maxWidth: "100%" }}>
       {d.id && <input type="hidden" name="id" value={d.id} />}
 
       <Section title="Basics">

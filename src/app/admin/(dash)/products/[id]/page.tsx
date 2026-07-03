@@ -33,7 +33,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
   };
 
   return (
-    <div>
+    <div style={{ maxWidth: 900, margin: "0 auto" }}>
       <Link href="/admin/products" style={{ color: "#78716c", textDecoration: "none", fontSize: "0.85rem" }}>← Products</Link>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "0.5rem 0 1.5rem" }}>
         <h1 style={{ fontFamily: "var(--font-display, serif)", fontSize: "2rem" }}>Edit product</h1>

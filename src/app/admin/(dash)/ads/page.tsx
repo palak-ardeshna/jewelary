@@ -7,7 +7,7 @@ export default async function AdminAdsPage() {
   const cfg = await getAdsConfig();
 
   return (
-    <div style={{ maxWidth: 760 }}>
+    <div style={{ maxWidth: 860, margin: "0 auto" }}>
       <h1 style={{ fontFamily: "var(--font-display, serif)", fontSize: "2rem", marginBottom: "0.5rem" }}>Ads</h1>
       <p style={{ color: "#78716c", marginBottom: "1.5rem" }}>
         Turn ads on or off and paste your ad code (e.g. a Google AdSense unit) into any slot.
