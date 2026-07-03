@@ -7,7 +7,7 @@ export const metadata = { title: "માર્ગદર્શિકા (Guide)" 
 
 export default function AdminGuidePage() {
   return (
-    <div style={{ maxWidth: 820, lineHeight: 1.8 }}>
+    <div style={{ maxWidth: 1160, margin: "0 auto", lineHeight: 1.8 }}>
       <h1 style={{ fontFamily: "var(--font-display, serif)", fontSize: "2.2rem", marginBottom: "0.25rem" }}>
         માર્ગદર્શિકા
       </h1>
@@ -19,6 +19,8 @@ export default function AdminGuidePage() {
         💡 <b>સૌથી અગત્યની વાત:</b> તમે અહીં જે પણ ફેરફાર <b>Save</b> કરો છો, એ તરત જ તમારી
         લાઇવ વેબસાઇટ પર દેખાય છે. કોઈ અલગથી “publish” કરવાની જરૂર નથી.
       </Note>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))", gap: "1rem", alignItems: "start" }}>
 
       <Section n="1" title="ડેશબોર્ડ (Dashboard)">
         <p>લોગિન કર્યા પછી પહેલું પેજ. અહીં કુલ કેટલી પ્રોડક્ટ, કૅટેગરી અને કલેક્શન છે એ દેખાય છે.
@@ -80,6 +82,8 @@ export default function AdminGuidePage() {
           <li>તમારો એડમિન <b>પાસવર્ડ કોઈને ના આપો</b>.</li>
         </ul>
       </Section>
+
+      </div>
 
       <Note>
         કોઈ પણ મૂંઝવણ થાય તો ડરવાની જરૂર નથી — ખોટું સેવ થાય તો પણ એ જ પેજ પર પાછા આવીને
