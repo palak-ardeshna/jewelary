@@ -19,15 +19,25 @@ function slugify(s: string): string {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
-// Normalise a row's keys to lowercase/trimmed so "Price In Paise", "priceInPaise"
-// and "price_in_paise" all resolve to the same field.
+// Normalise a row's keys to bare lowercase alphanumerics so "Price In Paise",
+// "priceInPaise", "price_in_paise" and "Price (paise)" all collapse to the same
+// key ("pricepaise"). Parentheses, spaces, units — all stripped.
 function normalizeKeys(row: ImportRow): Record<string, string> {
   const out: Record<string, string> = {};
   for (const [k, v] of Object.entries(row)) {
     if (v == null) continue;
-    out[k.toLowerCase().replace(/[\s_]+/g, "")] = String(v).trim();
+    out[k.toLowerCase().replace(/[^a-z0-9]/g, "")] = String(v).trim();
   }
   return out;
+}
+
+// Returns the first non-empty value among the given normalized-key aliases.
+function pick(r: Record<string, string>, ...keys: string[]): string {
+  for (const k of keys) {
+    const v = r[k];
+    if (v != null && v !== "") return v;
+  }
+  return "";
 }
 
 const int = (v?: string): number | null => {
@@ -69,49 +79,55 @@ export async function importProducts(rows: ImportRow[]): Promise<ImportResult> {
     const rowNum = i + 2; // +1 for header, +1 for 1-based display
     try {
       const r = normalizeKeys(rows[i]);
-      const name = r.name;
+      const name = pick(r, "name", "productname", "title");
       if (!name) { result.skipped++; continue; } // blank row
 
-      // Price: accept paise directly, or rupees (× 100) as a convenience column.
-      const priceInPaise = int(r.priceinpaise) ?? (float(r.pricerupees ?? r.price) != null ? Math.round((float(r.pricerupees ?? r.price) as number) * 100) : null);
+      // Price: accept paise directly ("Price (paise)" → pricepaise), or rupees
+      // ("Price (₹)"/"priceRupees") × 100 as a convenience.
+      const paiseRaw = pick(r, "pricepaise", "priceinpaise");
+      const rupeesRaw = pick(r, "pricerupees", "pricers", "price");
+      const priceInPaise = int(paiseRaw) ?? (float(rupeesRaw) != null ? Math.round((float(rupeesRaw) as number) * 100) : null);
       if (priceInPaise == null) { result.errors.push({ row: rowNum, message: `"${name}": missing price` }); continue; }
 
-      const mrpInPaise = int(r.mrpinpaise) ?? (float(r.mrprupees ?? r.mrp) != null ? Math.round((float(r.mrprupees ?? r.mrp) as number) * 100) : null);
+      const mrpPaiseRaw = pick(r, "mrppaise", "mrpinpaise");
+      const mrpRupeesRaw = pick(r, "mrprupees", "mrprs", "mrp");
+      const mrpInPaise = int(mrpPaiseRaw) ?? (float(mrpRupeesRaw) != null ? Math.round((float(mrpRupeesRaw) as number) * 100) : null);
 
       // Category by name or slug (required).
-      const catKey = (r.category ?? r.categoryid ?? "").toLowerCase();
-      const categoryId = catBy.get(catKey);
-      if (!categoryId) { result.errors.push({ row: rowNum, message: `"${name}": unknown category "${r.category ?? r.categoryid ?? ""}"` }); continue; }
+      const catInput = pick(r, "category", "categoryname", "categoryid");
+      const categoryId = catBy.get(catInput.toLowerCase());
+      if (!categoryId) { result.errors.push({ row: rowNum, message: `"${name}": unknown category "${catInput}"` }); continue; }
 
-      const brandKey = (r.brand ?? "").toLowerCase();
-      const brandId = brandKey ? brandBy.get(brandKey) ?? null : null;
+      const brandInput = pick(r, "brand", "brandname");
+      const brandId = brandInput ? brandBy.get(brandInput.toLowerCase()) ?? null : null;
 
-      const slug = r.slug ? slugify(r.slug) : slugify(name);
+      const slugInput = pick(r, "slug");
+      const slug = slugInput ? slugify(slugInput) : slugify(name);
 
       const data = {
         slug, name,
-        description: r.description ?? "",
+        description: pick(r, "description"),
         priceInPaise,
         mrpInPaise,
-        currency: r.currency || "INR",
-        inStock: boolOf(r.instock),
-        stockUnits: int(r.stockunits),
-        color: r.color || null,
-        imageUrl: r.imageurl || null,
+        currency: pick(r, "currency") || "INR",
+        inStock: boolOf(pick(r, "instock")),
+        stockUnits: int(pick(r, "stockunits")),
+        color: pick(r, "color") || null,
+        imageUrl: pick(r, "imageurl") || null,
         categoryId,
         brandId,
-        rating: float(r.rating),
-        reviewCount: int(r.reviewcount) ?? 0,
-        sizes: listJson(r.sizes),
-        tags: listJson(r.tags),
-        gemstones: jsonOrNull(r.gemstones),
-        certifications: jsonOrNull(r.certifications),
-        metal: r.metal || null,
-        purity: r.purity || null,
-        grossWeightG: float(r.grossweightg),
-        collectionLine: r.collectionline || null,
-        gender: r.gender || null,
-        status: (r.status || "ACTIVE").toUpperCase(),
+        rating: float(pick(r, "rating")),
+        reviewCount: int(pick(r, "reviewcount")) ?? 0,
+        sizes: listJson(pick(r, "sizes")),
+        tags: listJson(pick(r, "tags")),
+        gemstones: jsonOrNull(pick(r, "gemstonesjson", "gemstones")),
+        certifications: jsonOrNull(pick(r, "certificationsjson", "certifications")),
+        metal: pick(r, "metal") || null,
+        purity: pick(r, "purity") || null,
+        grossWeightG: float(pick(r, "grossweightg", "grossweight")),
+        collectionLine: pick(r, "collectionline") || null,
+        gender: pick(r, "gender") || null,
+        status: (pick(r, "status") || "ACTIVE").toUpperCase(),
       };
 
       // Upsert on slug so re-importing the same sheet updates instead of dup-failing.
