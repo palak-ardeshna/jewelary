@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useState } from "react";
 import { saveProduct } from "@/app/admin/actions";
 
 export interface ProductFormDefaults {
@@ -21,6 +22,30 @@ export function ProductForm({
   brands: { id: string; name: string }[];
 }) {
   const d = defaults;
+  const [imageUrl, setImageUrl] = useState(d.imageUrl ?? "");
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setUploadError(null);
+    try {
+      const body = new FormData();
+      body.append("file", file);
+      const res = await fetch("/api/admin/upload", { method: "POST", body });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || "Upload failed");
+      setImageUrl(json.url);
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setUploading(false);
+      e.target.value = ""; // allow re-selecting the same file
+    }
+  }
+
   return (
     <form action={saveProduct} style={{ maxWidth: "100%" }}>
       {d.id && <input type="hidden" name="id" value={d.id} />}
@@ -73,7 +98,35 @@ export function ProductForm({
           <Field label="Stock units"><input name="stockUnits" type="number" defaultValue={d.stockUnits} style={input} /></Field>
           <Field label="Color"><input name="color" defaultValue={d.color} placeholder="Yellow Gold" style={input} /></Field>
         </Row>
-        <Field label="Image URL" hint="Leave blank to auto-resolve a placeholder"><input name="imageUrl" defaultValue={d.imageUrl} style={input} /></Field>
+        <Field label="Product image" hint="Upload a file (stored on Cloudinary) or paste an image URL. Leave blank to auto-resolve a placeholder.">
+          <div style={{ display: "flex", gap: "1rem", alignItems: "flex-start", flexWrap: "wrap" }}>
+            {imageUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={imageUrl} alt="Preview" style={{ width: 96, height: 96, objectFit: "cover", borderRadius: 8, border: "1px solid #e7e5e4", flexShrink: 0 }} />
+            ) : (
+              <div style={{ width: 96, height: 96, borderRadius: 8, border: "1px dashed #d6d3d1", display: "flex", alignItems: "center", justifyContent: "center", color: "#a8a29e", fontSize: "0.7rem", textAlign: "center", flexShrink: 0 }}>No image</div>
+            )}
+            <div style={{ flex: 1, minWidth: 220 }}>
+              <input
+                name="imageUrl"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                placeholder="https://res.cloudinary.com/…  or  /images/products/foo.jpg"
+                style={input}
+              />
+              <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginTop: "0.5rem", flexWrap: "wrap" }}>
+                <label style={{ padding: "0.45rem 0.9rem", background: "#fff", color: "#1c1917", border: "1px solid #d6d3d1", borderRadius: 8, cursor: uploading ? "wait" : "pointer", fontSize: "0.82rem", fontWeight: 500 }}>
+                  {uploading ? "Uploading…" : "Upload image"}
+                  <input type="file" accept="image/*" onChange={handleUpload} disabled={uploading} style={{ display: "none" }} />
+                </label>
+                {imageUrl && !uploading && (
+                  <button type="button" onClick={() => setImageUrl("")} style={{ padding: "0.45rem 0.9rem", background: "#fff", color: "#78716c", border: "1px solid #e7e5e4", borderRadius: 8, cursor: "pointer", fontSize: "0.82rem" }}>Clear</button>
+                )}
+              </div>
+              {uploadError && <p style={{ fontSize: "0.75rem", color: "#dc2626", marginTop: "0.4rem" }}>{uploadError}</p>}
+            </div>
+          </div>
+        </Field>
       </Section>
 
       <Section title="Jewellery attributes">

@@ -6,6 +6,7 @@ const nextConfig = {
     unoptimized: true,
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "res.cloudinary.com" },
     ],
   },
   // Keep the Prisma engine out of the server bundle tracing noise.
