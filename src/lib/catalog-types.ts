@@ -3,7 +3,7 @@
 // importing a *value* from store.ts into a client bundle would drag in Prisma.
 
 export interface Brand { id: string; slug: string; name: string; }
-export interface Category { id: string; slug: string; name: string; description?: string; parentId?: string; }
+export interface Category { id: string; slug: string; name: string; description?: string; parentId?: string; imageUrl?: string; featured?: boolean; }
 export interface Review { id: string; productId: string; rating: number; author: string; body: string; }
 export interface Gemstone { type: string; caratWeight?: number; cut?: string; clarity?: string; count?: number; }
 export interface Certification { body: string; number?: string; }
