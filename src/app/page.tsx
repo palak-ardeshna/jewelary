@@ -16,6 +16,18 @@ export default async function HomePage() {
   const featured = inStock.slice(0, 4);
   const gifting = inStock.filter((p) => p.priceInPaise <= 20000).slice(0, 4);
 
+  // Featured "Shop by Category" tiles. Admin picks these via the "Feature on
+  // homepage" toggle; if none are flagged we fall back to a sensible default set.
+  const FEATURED_CAT_SLUGS = ["bangles", "bracelets", "earrings", "necklaces"];
+  const flagged = categories.filter((c) => c.featured);
+  const featuredCategories = (flagged.length > 0
+    ? flagged
+    : [
+        ...FEATURED_CAT_SLUGS.map((s) => categories.find((c) => c.slug === s)).filter(Boolean),
+        ...categories.filter((c) => !FEATURED_CAT_SLUGS.includes(c.slug)),
+      ].filter(Boolean)
+  ).slice(0, 4) as typeof categories;
+
   const catImages: Record<string, string> = {
     "rings":       "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&q=80&fit=crop&auto=format",
     "necklaces":   "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&q=80&fit=crop&auto=format",
@@ -88,11 +100,13 @@ export default async function HomePage() {
           <h2 className="t-h2">Shop by Category</h2>
         </div>
         <div className="home-cat-grid" style={{ display:"grid", gridTemplateColumns:"repeat(4, 1fr)", gap:"1.5rem" }}>
-          {categories.slice(0, 4).map((c) => (
+          {featuredCategories.map((c) => {
+            const img = c.imageUrl || catImages[c.slug];
+            return (
             <Link key={c.id} href={`/${c.slug}`} style={{ textDecoration:"none", color:"inherit" }}>
               <div className="card" style={{ position:"relative", aspectRatio:"4/5", overflow:"hidden" }}>
-                {catImages[c.slug] && (
-                  <img src={catImages[c.slug]} alt={c.name} className="product-img" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
+                {img && (
+                  <img src={img} alt={c.name} className="product-img" style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }} />
                 )}
                 {/* Gradient for legibility */}
                 <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 40%)" }} />
@@ -102,7 +116,8 @@ export default async function HomePage() {
                 </div>
               </div>
             </Link>
-          ))}
+            );
+          })}
         </div>
       </section>
 

@@ -112,6 +112,8 @@ export async function saveCategory(fd: FormData) {
     name,
     description: optStr(fd, "description"),
     parentId: optStr(fd, "parentId"),
+    imageUrl: optStr(fd, "imageUrl"),
+    featured: bool(fd, "featured"),
     position: optInt(fd, "position") ?? 0,
   };
   if (id) await prisma.category.update({ where: { id }, data });

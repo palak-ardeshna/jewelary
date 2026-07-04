@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/server/db";
 import { saveCategory, deleteCategory } from "@/app/admin/actions";
 import { ConfirmButton } from "../ConfirmButton";
+import { ImageUploadField } from "../ImageUploadField";
 
 export const dynamic = "force-dynamic";
 
@@ -31,6 +32,14 @@ export default async function AdminCategoriesPage({ searchParams }: { searchPara
               {categories.filter((c) => c.id !== editing?.id && !c.parentId).map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
           </L>
+          <L>Category image
+            <div style={{ marginTop: "0.4rem" }}>
+              <ImageUploadField key={editing?.id ?? "new"} name="imageUrl" defaultValue={editing?.imageUrl ?? ""} />
+            </div>
+          </L>
+          <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.82rem", fontWeight: 500, color: "#44403c", marginBottom: "0.8rem" }}>
+            <input name="featured" type="checkbox" defaultChecked={editing?.featured ?? false} /> Feature on homepage (&ldquo;Shop by Category&rdquo;)
+          </label>
           <L>Position<input name="position" type="number" defaultValue={editing?.position ?? 0} style={input} /></L>
           <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem" }}>
             <button type="submit" style={btnDark}>{editing ? "Save" : "Add category"}</button>

@@ -55,7 +55,7 @@ function mapProduct(p: PProduct): Product {
 }
 
 function mapCategory(c: PCategory): Category {
-  return { id: c.id, slug: c.slug, name: c.name, description: undef(c.description), parentId: undef(c.parentId) };
+  return { id: c.id, slug: c.slug, name: c.name, description: undef(c.description), parentId: undef(c.parentId), imageUrl: undef(c.imageUrl), featured: c.featured };
 }
 function mapBrand(b: PBrand): Brand { return { id: b.id, slug: b.slug, name: b.name }; }
 function mapReview(r: PReview): Review { return { id: r.id, productId: r.productId, rating: r.rating, author: r.author, body: r.body }; }
