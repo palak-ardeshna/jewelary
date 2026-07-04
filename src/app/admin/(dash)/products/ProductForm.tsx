@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useState } from "react";
 import { saveProduct } from "@/app/admin/actions";
 
 export interface ProductFormDefaults {
@@ -21,6 +22,46 @@ export function ProductForm({
   brands: { id: string; name: string }[];
 }) {
   const d = defaults;
+  const [price, setPrice] = useState(d.priceInPaise ?? "");
+  const [mrp, setMrp] = useState(d.mrpInPaise ?? "");
+  const [currency, setCurrency] = useState(d.currency ?? "INR");
+  const [imageUrl, setImageUrl] = useState(d.imageUrl ?? "");
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setUploadError(null);
+    try {
+      const body = new FormData();
+      body.append("file", file);
+      const res = await fetch("/api/admin/upload", { method: "POST", body });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || "Upload failed");
+      setImageUrl(json.url);
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setUploading(false);
+      e.target.value = ""; // allow re-selecting the same file
+    }
+  }
+
+  // Live paise → currency preview shown under the price inputs.
+  function formatPaise(paise: string): string | null {
+    const n = Number(paise);
+    if (!paise.trim() || !Number.isFinite(n)) return null;
+    try {
+      return new Intl.NumberFormat("en-IN", { style: "currency", currency: currency || "INR" }).format(n / 100);
+    } catch {
+      return `${(n / 100).toFixed(2)} ${currency || "INR"}`;
+    }
+  }
+  const priceLabel = formatPaise(price);
+  const mrpLabel = formatPaise(mrp);
+
   return (
     <form action={saveProduct} style={{ maxWidth: "100%" }}>
       {d.id && <input type="hidden" name="id" value={d.id} />}
@@ -33,9 +74,15 @@ export function ProductForm({
 
       <Section title="Pricing (paise — ₹1 = 100 paise)">
         <Row>
-          <Field label="Price (paise)" required><input name="priceInPaise" type="number" defaultValue={d.priceInPaise} required style={input} /></Field>
-          <Field label="MRP (paise)"><input name="mrpInPaise" type="number" defaultValue={d.mrpInPaise} style={input} /></Field>
-          <Field label="Currency"><input name="currency" defaultValue={d.currency ?? "INR"} style={input} /></Field>
+          <Field label="Price (paise)" required>
+            <input name="priceInPaise" type="number" value={price} onChange={(e) => setPrice(e.target.value)} required style={input} />
+            <PricePreview label={priceLabel} />
+          </Field>
+          <Field label="MRP (paise)">
+            <input name="mrpInPaise" type="number" value={mrp} onChange={(e) => setMrp(e.target.value)} style={input} />
+            <PricePreview label={mrpLabel} />
+          </Field>
+          <Field label="Currency"><input name="currency" value={currency} onChange={(e) => setCurrency(e.target.value)} style={input} /></Field>
         </Row>
       </Section>
 
@@ -73,7 +120,45 @@ export function ProductForm({
           <Field label="Stock units"><input name="stockUnits" type="number" defaultValue={d.stockUnits} style={input} /></Field>
           <Field label="Color"><input name="color" defaultValue={d.color} placeholder="Yellow Gold" style={input} /></Field>
         </Row>
-        <Field label="Image URL" hint="Leave blank to auto-resolve a placeholder"><input name="imageUrl" defaultValue={d.imageUrl} style={input} /></Field>
+        <Field label="Product image" hint="Upload a file (stored on Cloudinary) or paste an image URL. Leave blank to auto-resolve a placeholder.">
+          <div style={{ display: "flex", gap: "1rem", alignItems: "flex-start", flexWrap: "wrap" }}>
+            {imageUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={imageUrl} alt="Preview" style={{ width: 96, height: 96, objectFit: "cover", borderRadius: 8, border: "1px solid #e7e5e4", flexShrink: 0 }} />
+            ) : (
+              <div style={{ width: 96, height: 96, borderRadius: 8, border: "1px dashed #d6d3d1", display: "flex", alignItems: "center", justifyContent: "center", color: "#a8a29e", fontSize: "0.7rem", textAlign: "center", flexShrink: 0 }}>No image</div>
+            )}
+            <div style={{ flex: 1, minWidth: 220 }}>
+              {/* Option 1 — upload from your computer (→ Cloudinary) */}
+              <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", flexWrap: "wrap" }}>
+                <label style={{ padding: "0.45rem 0.9rem", background: "#fff", color: "#1c1917", border: "1px solid #d6d3d1", borderRadius: 8, cursor: uploading ? "wait" : "pointer", fontSize: "0.82rem", fontWeight: 500 }}>
+                  {uploading ? "Uploading…" : "⬆ Upload from computer"}
+                  <input type="file" accept="image/*" onChange={handleUpload} disabled={uploading} style={{ display: "none" }} />
+                </label>
+                {imageUrl && !uploading && (
+                  <button type="button" onClick={() => setImageUrl("")} style={{ padding: "0.45rem 0.9rem", background: "#fff", color: "#78716c", border: "1px solid #e7e5e4", borderRadius: 8, cursor: "pointer", fontSize: "0.82rem" }}>Clear</button>
+                )}
+              </div>
+
+              {/* Divider */}
+              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", margin: "0.7rem 0 0.5rem" }}>
+                <span style={{ flex: 1, height: 1, background: "#e7e5e4" }} />
+                <span style={{ fontSize: "0.72rem", color: "#a8a29e", fontWeight: 500 }}>OR paste a URL</span>
+                <span style={{ flex: 1, height: 1, background: "#e7e5e4" }} />
+              </div>
+
+              {/* Option 2 — paste any image URL */}
+              <input
+                name="imageUrl"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                placeholder="https://res.cloudinary.com/…  or  /images/products/foo.jpg"
+                style={input}
+              />
+              {uploadError && <p style={{ fontSize: "0.75rem", color: "#dc2626", marginTop: "0.4rem" }}>{uploadError}</p>}
+            </div>
+          </div>
+        </Field>
       </Section>
 
       <Section title="Jewellery attributes">
@@ -103,6 +188,14 @@ export function ProductForm({
         <Link href="/admin/products" style={{ padding: "0.75rem 1.5rem", background: "#fff", color: "#1c1917", border: "1px solid #d6d3d1", borderRadius: 8, textDecoration: "none" }}>Cancel</Link>
       </div>
     </form>
+  );
+}
+
+function PricePreview({ label }: { label: string | null }) {
+  return (
+    <p style={{ fontSize: "0.78rem", fontWeight: 600, color: label ? "#15803d" : "#a8a29e", marginTop: "0.3rem" }}>
+      {label ? `= ${label}` : "—"}
+    </p>
   );
 }
 
