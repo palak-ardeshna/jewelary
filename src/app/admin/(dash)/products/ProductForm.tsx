@@ -129,6 +129,25 @@ export function ProductForm({
               <div style={{ width: 96, height: 96, borderRadius: 8, border: "1px dashed #d6d3d1", display: "flex", alignItems: "center", justifyContent: "center", color: "#a8a29e", fontSize: "0.7rem", textAlign: "center", flexShrink: 0 }}>No image</div>
             )}
             <div style={{ flex: 1, minWidth: 220 }}>
+              {/* Option 1 — upload from your computer (→ Cloudinary) */}
+              <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", flexWrap: "wrap" }}>
+                <label style={{ padding: "0.45rem 0.9rem", background: "#fff", color: "#1c1917", border: "1px solid #d6d3d1", borderRadius: 8, cursor: uploading ? "wait" : "pointer", fontSize: "0.82rem", fontWeight: 500 }}>
+                  {uploading ? "Uploading…" : "⬆ Upload from computer"}
+                  <input type="file" accept="image/*" onChange={handleUpload} disabled={uploading} style={{ display: "none" }} />
+                </label>
+                {imageUrl && !uploading && (
+                  <button type="button" onClick={() => setImageUrl("")} style={{ padding: "0.45rem 0.9rem", background: "#fff", color: "#78716c", border: "1px solid #e7e5e4", borderRadius: 8, cursor: "pointer", fontSize: "0.82rem" }}>Clear</button>
+                )}
+              </div>
+
+              {/* Divider */}
+              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", margin: "0.7rem 0 0.5rem" }}>
+                <span style={{ flex: 1, height: 1, background: "#e7e5e4" }} />
+                <span style={{ fontSize: "0.72rem", color: "#a8a29e", fontWeight: 500 }}>OR paste a URL</span>
+                <span style={{ flex: 1, height: 1, background: "#e7e5e4" }} />
+              </div>
+
+              {/* Option 2 — paste any image URL */}
               <input
                 name="imageUrl"
                 value={imageUrl}
@@ -136,15 +155,6 @@ export function ProductForm({
                 placeholder="https://res.cloudinary.com/…  or  /images/products/foo.jpg"
                 style={input}
               />
-              <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginTop: "0.5rem", flexWrap: "wrap" }}>
-                <label style={{ padding: "0.45rem 0.9rem", background: "#fff", color: "#1c1917", border: "1px solid #d6d3d1", borderRadius: 8, cursor: uploading ? "wait" : "pointer", fontSize: "0.82rem", fontWeight: 500 }}>
-                  {uploading ? "Uploading…" : "Upload image"}
-                  <input type="file" accept="image/*" onChange={handleUpload} disabled={uploading} style={{ display: "none" }} />
-                </label>
-                {imageUrl && !uploading && (
-                  <button type="button" onClick={() => setImageUrl("")} style={{ padding: "0.45rem 0.9rem", background: "#fff", color: "#78716c", border: "1px solid #e7e5e4", borderRadius: 8, cursor: "pointer", fontSize: "0.82rem" }}>Clear</button>
-                )}
-              </div>
               {uploadError && <p style={{ fontSize: "0.75rem", color: "#dc2626", marginTop: "0.4rem" }}>{uploadError}</p>}
             </div>
           </div>
