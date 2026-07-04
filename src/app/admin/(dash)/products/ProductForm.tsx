@@ -22,6 +22,9 @@ export function ProductForm({
   brands: { id: string; name: string }[];
 }) {
   const d = defaults;
+  const [price, setPrice] = useState(d.priceInPaise ?? "");
+  const [mrp, setMrp] = useState(d.mrpInPaise ?? "");
+  const [currency, setCurrency] = useState(d.currency ?? "INR");
   const [imageUrl, setImageUrl] = useState(d.imageUrl ?? "");
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -46,6 +49,19 @@ export function ProductForm({
     }
   }
 
+  // Live paise → currency preview shown under the price inputs.
+  function formatPaise(paise: string): string | null {
+    const n = Number(paise);
+    if (!paise.trim() || !Number.isFinite(n)) return null;
+    try {
+      return new Intl.NumberFormat("en-IN", { style: "currency", currency: currency || "INR" }).format(n / 100);
+    } catch {
+      return `${(n / 100).toFixed(2)} ${currency || "INR"}`;
+    }
+  }
+  const priceLabel = formatPaise(price);
+  const mrpLabel = formatPaise(mrp);
+
   return (
     <form action={saveProduct} style={{ maxWidth: "100%" }}>
       {d.id && <input type="hidden" name="id" value={d.id} />}
@@ -58,9 +74,15 @@ export function ProductForm({
 
       <Section title="Pricing (paise — ₹1 = 100 paise)">
         <Row>
-          <Field label="Price (paise)" required><input name="priceInPaise" type="number" defaultValue={d.priceInPaise} required style={input} /></Field>
-          <Field label="MRP (paise)"><input name="mrpInPaise" type="number" defaultValue={d.mrpInPaise} style={input} /></Field>
-          <Field label="Currency"><input name="currency" defaultValue={d.currency ?? "INR"} style={input} /></Field>
+          <Field label="Price (paise)" required>
+            <input name="priceInPaise" type="number" value={price} onChange={(e) => setPrice(e.target.value)} required style={input} />
+            <PricePreview label={priceLabel} />
+          </Field>
+          <Field label="MRP (paise)">
+            <input name="mrpInPaise" type="number" value={mrp} onChange={(e) => setMrp(e.target.value)} style={input} />
+            <PricePreview label={mrpLabel} />
+          </Field>
+          <Field label="Currency"><input name="currency" value={currency} onChange={(e) => setCurrency(e.target.value)} style={input} /></Field>
         </Row>
       </Section>
 
@@ -156,6 +178,14 @@ export function ProductForm({
         <Link href="/admin/products" style={{ padding: "0.75rem 1.5rem", background: "#fff", color: "#1c1917", border: "1px solid #d6d3d1", borderRadius: 8, textDecoration: "none" }}>Cancel</Link>
       </div>
     </form>
+  );
+}
+
+function PricePreview({ label }: { label: string | null }) {
+  return (
+    <p style={{ fontSize: "0.78rem", fontWeight: 600, color: label ? "#15803d" : "#a8a29e", marginTop: "0.3rem" }}>
+      {label ? `= ${label}` : "—"}
+    </p>
   );
 }
 
