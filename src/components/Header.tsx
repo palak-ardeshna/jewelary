@@ -10,7 +10,7 @@ const NAV_LINKS = [
   ["Rings", "/rings"],
   ["Necklaces", "/necklaces"],
   ["Earrings", "/earrings"],
-  ["Bangles", "/bangles"],
+  ["Bracelets", "/bracelets"],
   ["Bridal", "/c/best-diamond-engagement-rings"],
   ["Gifts", "/gifts"],
 ];
