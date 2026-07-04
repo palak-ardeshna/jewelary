@@ -16,7 +16,10 @@ export default async function AdminProductsPage() {
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
         <h1 style={{ fontFamily: "var(--font-display, serif)", fontSize: "2rem" }}>Products <span style={{ color: "#a8a29e", fontSize: "1rem" }}>({products.length})</span></h1>
-        <Link href="/admin/products/new" style={{ padding: "0.65rem 1.25rem", background: "#1c1917", color: "#fff", borderRadius: 8, textDecoration: "none", fontSize: "0.9rem" }}>+ New product</Link>
+        <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
+          <Link href="/admin/products/import" style={{ padding: "0.65rem 1.25rem", background: "#fff", color: "#1c1917", border: "1px solid #d6d3d1", borderRadius: 8, textDecoration: "none", fontSize: "0.9rem" }}>⬆ Import Excel/CSV</Link>
+          <Link href="/admin/products/new" style={{ padding: "0.65rem 1.25rem", background: "#1c1917", color: "#fff", borderRadius: 8, textDecoration: "none", fontSize: "0.9rem" }}>+ New product</Link>
+        </div>
       </div>
 
       <div className="admin-table-wrap" style={{ background: "#fff", border: "1px solid #e7e5e4", borderRadius: 12 }}>
