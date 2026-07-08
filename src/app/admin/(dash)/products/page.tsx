@@ -17,6 +17,8 @@ export default async function AdminProductsPage() {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
         <h1 style={{ fontFamily: "var(--font-display, serif)", fontSize: "2rem" }}>Products <span style={{ color: "#a8a29e", fontSize: "1rem" }}>({products.length})</span></h1>
         <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
+          {/* Plain <a> (not <Link>): this hits an API route that streams a file download. */}
+          <a href="/api/admin/products/export" style={{ padding: "0.65rem 1.25rem", background: "#fff", color: "#1c1917", border: "1px solid #d6d3d1", borderRadius: 8, textDecoration: "none", fontSize: "0.9rem" }}>⬇ Export Excel</a>
           <Link href="/admin/products/import" style={{ padding: "0.65rem 1.25rem", background: "#fff", color: "#1c1917", border: "1px solid #d6d3d1", borderRadius: 8, textDecoration: "none", fontSize: "0.9rem" }}>⬆ Import Excel/CSV</Link>
           <Link href="/admin/products/new" style={{ padding: "0.65rem 1.25rem", background: "#1c1917", color: "#fff", borderRadius: 8, textDecoration: "none", fontSize: "0.9rem" }}>+ New product</Link>
         </div>
