@@ -127,3 +127,21 @@ model Setting {
   valueJson String
   updatedAt DateTime @updatedAt
 }
+
+model Order {
+  id              String   @id @default(cuid())
+  number          String   @unique
+  email           String
+  phone           String?
+  shippingAddress String   // JSON string
+  items           String   // JSON string
+  totalPaise      Int
+  currencyCode    String   @default("INR")
+  status          String   @default("PENDING")
+  paymentStatus   String   @default("CREATED")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([status])
+}
+
