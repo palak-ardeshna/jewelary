@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useCart } from "@/components/CartProvider";
 import { Icon } from "@/components/Icon";
 import { useRouter } from "next/navigation";
+import { submitOrder } from "./actions";
 
 function fmt(p: number) {
   return new Intl.NumberFormat("en-IN", { style:"currency", currency:"INR", maximumFractionDigits:0 }).format(p / 100);
@@ -65,23 +66,22 @@ export default function CheckoutPage() {
     if (Object.keys(errs).length) { setErrors(errs); setStep(errs.name || errs.email || errs.phone ? 1 : 2); return; }
     setLoading(true);
     setOrderPlaced(true);
-    await new Promise(r => setTimeout(r, 1600));
     
-    const newOrder = {
-      id: `AUR${Math.floor(100000 + Math.random() * 900000)}`,
-      date: new Date().toISOString(),
-      items: items,
-      total: grandTotal,
-      status: "Processing"
-    };
-    
-    const saved = localStorage.getItem("aurelia_orders");
-    const list = saved ? JSON.parse(saved) : [];
-    list.unshift(newOrder);
-    localStorage.setItem("aurelia_orders", JSON.stringify(list));
-    
-    clearCart();
-    router.push(`/checkout/success?id=${newOrder.id}`);
+    try {
+      const res = await submitOrder({
+        ...form,
+        items,
+        totalPaise: grandTotal,
+      });
+      
+      clearCart();
+      router.push(`/checkout/success?id=${res.orderId}`);
+    } catch (e) {
+      console.error(e);
+      setLoading(false);
+      setOrderPlaced(false);
+      alert("There was an error placing your order. Please try again.");
+    }
   }
 
   useEffect(() => {
